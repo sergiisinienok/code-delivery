@@ -54,10 +54,10 @@
     2. Packaging our deliverables, environment isolation. Docker.
     3. Configuration management best practices. ENV variables and other cool things.
 5. Delivery Pipeline - godmode. CI/CD pipeline.
-    1. Does it make sense to go this far? Yes! Prooflink ("DORA State Of DevOps 2018")[external-content/DORA-State of DevOps.pdf].
+    1. Does it make sense to go this far? Yes! Prooflink ["DORA State Of DevOps 2018"]("../external-content/DORA-State of DevOps.pdf")
     2. Setting up CI/CD from scratch on a project. Where to start?
     3. Pick the CI/CD platform first. Pros and Cons of specific tools (like Jenkins vs TeamCity).
-    4. DevOps. This is a set of practices, not a role! ("DevOps Manifesto")[https://sites.google.com/a/jezhumble.net/devops-manifesto/]. Basic practices:
+    4. DevOps. This is a set of practices, not a role! ["DevOps Manifesto"](https://sites.google.com/a/jezhumble.net/devops-manifesto/). Basic practices:
         1. Infrastructure As Code. Automated infrastructure provisioning.
         2. /// TBD:
     5. Infrastructure vs Code versions compatibility
