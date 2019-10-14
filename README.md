@@ -2,18 +2,21 @@
 
 ## Demo application - requirements
 
-1.There should be the service to manage Products information. This service should provide the following functionality:
+1. There should be the service to manage Products information. This service should provide the following functionality:
     1. List all the Products available to the user.
     2. Create new products.
     3. Edit existing products.
+
 2. The service will consist of the following components:
     1. Products DB. Should be hosted separately. The service should support both Postgres and MongoDB.
+
     2. Products REST API. Should be hosted separately. Tech: NodeJS, TypeScript, ???. The API should support the following functionalities:
         1. HTTP POST /product - will create a new Product and return it's payload back to the client. Idempotent.
         2. HTTP GET /product/list - will return all the products available to the user.
         3. HTTP GET /product/{id} - will return the specific product by its ID.
         4. HTTP PATCH /product/{id} - will edit the product with the specified ID.
         5. API app should log its internal to stdout using Structured Logging approach.
+
     3. Products management UI. Should be hosted separately. Tech: AngularJS, TypeScript, ???. Should have the following functionalities:
         1. Products list view.
         2. Create new Product button.
@@ -71,4 +74,5 @@
 # Time Spent.
 
 1. 10-12-2019 - 3h.
+2. 10-14-2019 - 4h.
 
