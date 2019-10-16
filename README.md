@@ -33,7 +33,7 @@
         1. Environment configuration issue. We're out of control on what's there and unable to easily track this.
         2. App's misconfigurations. How to appropriately configure your app.
 
-1. What to start from - need a flowchart to cover the infrastructure/hosting part.
+1. What to start from - need a flowchart to cover the infrastructure/hosting part for each case.
     1. What kind of an app we'll be developing? How are the sandboxes/prod instances set up?
         1. Desktop app - ???
         2. Mobile app - ???
@@ -76,4 +76,12 @@
 1. 10-12-2019 - 3h.
 2. 10-14-2019 - 4h.
 3. 10-15-2019 - 3h.
+4. 10-16-2019 - 3h.
 
+----------------------------------------------------------------
+
+# Useful links
+
+1. ["Как установить Nginx в Ubuntu 18.04"](https://www.digitalocean.com/community/tutorials/nginx-ubuntu-18-04-ru)
+2. ["PostgreSQL in the cloud"](elephantsql.com)
+3. ["How To Set Up a Node.js Application for Production on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04)
