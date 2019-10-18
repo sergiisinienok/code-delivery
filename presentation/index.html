@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Title</title>
+    <title>Software Delivery Procss 101</title>
     <meta charset="utf-8">
     <style>
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -42,12 +42,26 @@
             font-size:46px;
             line-height:1.5em;
         }
+
         #presenter-creds {
             font-weight: bold;
             text-align: right;
             vertical-align: bottom;
             padding: 5em 0em 0em 0em;
             line-height: 1.5em;
+        }
+
+        /* Two-column layout */
+        .left-column {
+            width: 50%;
+            float: left;
+        }
+        .right-column {
+            width: 49%;
+            float: right;
+            padding-top: 0em;
+            margin-top: 0em;
+            text-align: left;
         }
     </style>
 </head>
@@ -57,7 +71,7 @@
 
 class: dp-leading, center, middle
 
-# Code Delivery Procedure 101
+# Software Delivery Procss 101
 What it takes to deliver the code change
 <div id="presenter-creds">
 Sergii Sinienok<br />
@@ -67,20 +81,99 @@ Cloud Architect @ Dev-Pro.net
 class: dp-regular
 # Agenda
 
-1. Code Delivery - Definition
-2. Code Delivery Workflow for various app types
-3. ...
-4. Demo: Manual app deployment fromn the ground up
+1. Software Delivery and Development - Theory
+3. Delivery Workflow for various types of apps
+4. ...
+5. Demo: Manual app deployment fromn the ground up
 
 ---
 class: dp-regular
 
-# Code Delivery - Definition
+# Software Delivery and Development - Definitions
+
+__Development__ - programming the chain of actions and conditions in order to achieve the expected system reactions upon the defined inputs.
+
+__Delivery__ - programming the chain of actions and conditions in order to cost and time effectively satisfy the end customer needs, so to generate maximum revenue
 
 ---
 class: dp-regular
 
-# Code Delivery Workflow for various app types
+# Software Delivery and Development - Side by side
+
+.left-column[ ### Development
+* Strives to perfection
+* Is a good place for mental fights
+* The result fulfills only your and your mama demands
+* Expected to work on your local environment
+]
+.right-column[ ### Delivery
+* Strives to be delivered on-time
+* Is a good place for collaboration
+* The result fulfills a demand of thousands people
+* Needs an __infrastructure__ in order to work
+]
+
+---
+class: dp-regular
+
+# Delivery Workflow for various app types
+
+1. Desktop App
+2. Mobile App
+3. Website
+4. Public facing API
+5. The service with UI, API, and other features.
+
+---
+class: dp-regular
+
+# Software Delivery - Build step
+
+* Construction of something that has an observable and tangible result.
+* Process of converting source code files into standalone software artifact(s) that can be run on a computer. Produce artifacts.
+
+### Functions of the Build step:
+
+* Version control/Tagging.
+* Code qualit check.
+* Compilation/Translation of th esource code into executable instructions.
+---
+class: dp-regular
+
+# Delivery Workflow - Build Artifacts per Application type
+
+1. __Desktop App__ - EXE or MSI files.
+2. __Mobile App__ - .app (iOS) or .apk (Android) bundles.
+3. __Website__ - a folder with files or archive. Might contain configuration.
+4. __Public facing API__ - a folder with files or archive. Might contain configuration.
+5. __The service with UI, API, and other features__ - a folder with files or archive.
+
+["Build Artifacts per Application type"](assets/Delivery Infrastructure per Application Type.png)
+---
+class: dp-regular
+
+# Hosting Infrastructure for Desktop App
+
+
+---
+class: dp-regular
+
+# Hosting Infrastructure for Mobile App
+---
+class: dp-regular
+
+# Hosting Infrastructure for Website
+---
+class: dp-regular
+
+# Hosting Infrastructure for API and Services
+---
+class: dp-regular
+
+# Delivery Workflow - Common Best Practices
+
+* All code shoul be under Version Control System (VCS). No exeptions.
+* At least two environments: Staging and Production.
 
 ---
 class: dp-regular, center, middle
@@ -92,7 +185,7 @@ class: dp-regular
 
 # What we'll be doing:
 
-1. Infrastructure*:
+1. Infrastructure:
     1. Server for UI app.
     2. Server for API.
     3. DB Server.
@@ -104,7 +197,7 @@ class: dp-regular
 3. Network configurration and Integration testing.
 
 
-*Note: We'll be using GCP for our infrastructure for this particular example.
+Note: We'll be using GCP for our infrastructure for this particular example.
 ---
 class: dp-regular
 
