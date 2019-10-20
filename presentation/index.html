@@ -81,10 +81,10 @@ Cloud Architect @ Dev-Pro.net
 class: dp-regular
 # Agenda
 
-1. Software Delivery and Development - Theory
-3. Delivery Workflow for various types of apps
-4. ...
-5. Demo: Manual app deployment fromn the ground up
+* Software Delivery and Development - Theory
+* Delivery Workflow for various types of apps
+* ...
+* Demo: Manual app deployment fromn the ground up
 
 ---
 class: dp-regular
@@ -118,11 +118,11 @@ class: dp-regular
 
 # Delivery Workflow for various app types
 
-1. Desktop App
-2. Mobile App
-3. Website
-4. Public facing API
-5. The service with UI SPA, API, and other features.
+* Desktop App
+* Mobile App
+* Website
+* Public facing API
+* The service with UI Single Page Application (SPA), API, and other features.
 
 ---
 class: dp-regular
@@ -142,23 +142,34 @@ class: dp-regular
 
 # Delivery Workflow - Build Artifacts per Application type
 
-1. __Desktop App__ - EXE or MSI files.
-2. __Mobile App__ - .app (iOS) or .apk (Android) bundles.
-3. __Website__ - a folder with files or archive. Might contain configuration.
-4. __Public facing API__ - a folder with files or archive. Might contain configuration.
-5. __The service with UI SPA, API, and other features__ - a folder with files or archive.
+* __Desktop App__ - EXE or MSI files.
+* __Mobile App__ - .app (iOS) or .apk (Android) bundles.
+* __Website__ - a folder with files or archive. Might contain configuration.
+* __Public facing API__ - a folder with files or archive. Might contain configuration.
+* __The service with UI SPA, API, and other features__ - a folder with files or archive.
 
 ["Build Artifacts per Application type"](assets/Delivery Infrastructure per Application Type.png)
 ---
 class: dp-regular
 
+# Software Delivery - Hosting Infrastructure
+
+* Facility(ies) that houses IT equipment, such as computing servers and networking kits. Provides basic utilities for it to work (electricity, cooling, etc.).
+* Software applications, such as web servers, DB servers, etc., installed on computing servers.
+* Maintenance service for all the above.
+* Physical and/or remote access to the IT equipment to configure and operate.
+* All the otther perks that make one infrastructure better from another.
+
+---
+class: dp-regular
+
 # Hosting Infrastructure for Desktop App
 
-1. Communicates with an "outside world" via Internet.
-2. All configuration is packed along with the main app file.
-3. Distribution server - main source for end users to download the app from.
-4. Runs on End User's local environment (Computer).
-5. Extremely versatile envs, no control for the app.
+* Communicates with an "outside world" via Internet.
+* All configuration is packed along with the main app file.
+* Distribution server - main source for end users to download the app from.
+* Runs on End User's local environment (Computer).
+* Extremely versatile envs, no control for the app.
 
 ["Hosting Infrastructure for Desktop Application"](assets/Hosting Infrastructure for Desktop Application.png)
 ---
@@ -166,11 +177,11 @@ class: dp-regular
 
 # Hosting Infrastructure for Mobile App
 
-1. Communicates with an "outside world" via Internet.
-2. All configuration is packed along with the main app file.
-3. App Store - main source for end users to download the app from.
-4. Runs on End User's local environment (Phone).
-5. Computation Power and Network bandwith are strictly limited.
+* Communicates with an "outside world" via Internet.
+* All configuration is packed along with the main app file.
+* App Store - main source for end users to download the app from.
+* Runs on End User's local environment (Phone).
+* Computation Power and Network bandwith are strictly limited.
 
 ["Hosting Infrastructure for Mobile Application"](assets/Hosting Infrastructure for Mobile Application.png)
 ---
@@ -178,17 +189,24 @@ class: dp-regular
 
 # Hosting Infrastructure for Website
 
-1. Configuration becames an Issue because of Secrets.
-2. Static VS dynamic websites.
-2. HTTP protocol is the main communication channel.
-3. HTTP vs HTTPS.
-4. Domain names.
+* Configuration becames an Issue because of Secrets.
+* Static VS dynamic websites.
+* HTTP protocol is the main communication channel.
+* HTTP vs HTTPS.
+* Domain names.
 
 ["Hosting Infrastructure for Website"](assets/Hosting Infrastructure for Website.png)
 ---
 class: dp-regular
 
-# Hosting Infrastructure for API and Services
+# Hosting Infrastructure for SPA with API and Services
+
+* SPA vs Website.
+* At least two domain names instead of one.
+* Website demo with dev tools (`static-website-example`).
+* SPA demo with dev tools.
+
+["Hosting Infrastructure for SPA with API and services"](assets/Hosting Infrastructure for SPA with API and Services.png)
 ---
 class: dp-regular
 
@@ -196,11 +214,19 @@ class: dp-regular
 
 * All code shoul be under Version Control System (VCS). No exeptions.
 * At least two environments: Staging and Production.
+* Document everything that requires documentation.
+* Everything as a Code.
 
 ---
 class: dp-regular, center, middle
 
 # Demo: Manual app deployment from the ground up
+
+---
+class: dp-regular
+
+# Demo Application - Requirements
+/// TBD: Add erquirements for the demo app.
 
 ---
 class: dp-regular
