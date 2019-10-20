@@ -122,7 +122,7 @@ class: dp-regular
 2. Mobile App
 3. Website
 4. Public facing API
-5. The service with UI, API, and other features.
+5. The service with UI SPA, API, and other features.
 
 ---
 class: dp-regular
@@ -146,7 +146,7 @@ class: dp-regular
 2. __Mobile App__ - .app (iOS) or .apk (Android) bundles.
 3. __Website__ - a folder with files or archive. Might contain configuration.
 4. __Public facing API__ - a folder with files or archive. Might contain configuration.
-5. __The service with UI, API, and other features__ - a folder with files or archive.
+5. __The service with UI SPA, API, and other features__ - a folder with files or archive.
 
 ["Build Artifacts per Application type"](assets/Delivery Infrastructure per Application Type.png)
 ---
@@ -157,17 +157,34 @@ class: dp-regular
 1. Communicates with an "outside world" via Internet.
 2. All configuration is packed along with the main app file.
 3. Distribution server - main source for end users to download the app from.
-4. Runs on End User's local environment. Extremely versatile envs, no control for the app.
+4. Runs on End User's local environment (Computer).
+5. Extremely versatile envs, no control for the app.
 
 ["Hosting Infrastructure for Desktop Application"](assets/Hosting Infrastructure for Desktop Application.png)
 ---
 class: dp-regular
 
 # Hosting Infrastructure for Mobile App
+
+1. Communicates with an "outside world" via Internet.
+2. All configuration is packed along with the main app file.
+3. App Store - main source for end users to download the app from.
+4. Runs on End User's local environment (Phone).
+5. Computation Power and Network bandwith are strictly limited.
+
+["Hosting Infrastructure for Mobile Application"](assets/Hosting Infrastructure for Mobile Application.png)
 ---
 class: dp-regular
 
 # Hosting Infrastructure for Website
+
+1. Configuration becames an Issue because of Secrets.
+2. Static VS dynamic websites.
+2. HTTP protocol is the main communication channel.
+3. HTTP vs HTTPS.
+4. Domain names.
+
+["Hosting Infrastructure for Website"](assets/Hosting Infrastructure for Website.png)
 ---
 class: dp-regular
 
