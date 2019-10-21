@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Title</title>
+    <title>Software Delivery Procss 101</title>
     <meta charset="utf-8">
     <style>
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -35,6 +35,12 @@
         .remark-slide-content {
             font-size: 22px;
             padding: 4em 2em 2em 2em;
+            line-height:1.5em;
+        }
+
+        .remark-slide-content h1 {
+            font-size:46px;
+            line-height:1.5em;
         }
 
         #presenter-creds {
@@ -44,6 +50,19 @@
             padding: 5em 0em 0em 0em;
             line-height: 1.5em;
         }
+
+        /* Two-column layout */
+        .left-column {
+            width: 50%;
+            float: left;
+        }
+        .right-column {
+            width: 49%;
+            float: right;
+            padding-top: 0em;
+            margin-top: 0em;
+            text-align: left;
+        }
     </style>
 </head>
 
@@ -52,7 +71,7 @@
 
 class: dp-leading, center, middle
 
-# Code Delivery Procedure 101
+# Software Delivery Procss 101
 What it takes to deliver the code change
 <div id="presenter-creds">
 Sergii Sinienok<br />
@@ -62,14 +81,428 @@ Cloud Architect @ Dev-Pro.net
 class: dp-regular
 # Agenda
 
-1. Introduction
-2. Deep-dive
-3. ...
+* Software Delivery and Development - Theory
+* Delivery Workflow for various types of apps
+* ...
+* Demo: Manual app deployment fromn the ground up
 
 ---
 class: dp-regular
 
-# Introduction
+# Software Delivery and Development - Definitions
+
+__Development__ - programming the chain of actions and conditions in order to achieve the expected system reactions upon the defined inputs.
+
+__Delivery__ - programming the chain of actions and conditions in order to cost and time effectively satisfy the end customer needs, so to generate maximum revenue
+
+---
+class: dp-regular
+
+# Software Delivery and Development - Side by side
+
+.left-column[ ### Development
+* Strives to perfection
+* Is a good place for mental fights
+* The result fulfills only your and your mama demands
+* Expected to work on your local environment
+]
+.right-column[ ### Delivery
+* Strives to be delivered on-time
+* Is a good place for collaboration
+* The result fulfills a demand of thousands people
+* Needs an __infrastructure__ in order to work
+]
+
+---
+class: dp-regular
+
+# Delivery Workflow for various app types
+
+* Desktop App
+* Mobile App
+* Website
+* Public facing API
+* The service with UI Single Page Application (SPA), API, and other features.
+
+---
+class: dp-regular
+
+# Software Delivery - Build step
+
+* Construction of something that has an observable and tangible result.
+* Process of converting source code files into standalone software artifact(s) that can be run on a computer. Produce artifacts.
+
+### Functions of the Build step:
+
+* Version control/Tagging.
+* Code qualit check.
+* Compilation/Translation of th esource code into executable instructions.
+---
+class: dp-regular
+
+# Delivery Workflow - Build Artifacts per Application type
+
+* __Desktop App__ - EXE or MSI files.
+* __Mobile App__ - .app (iOS) or .apk (Android) bundles.
+* __Website__ - a folder with files or archive. Might contain configuration.
+* __Public facing API__ - a folder with files or archive. Might contain configuration.
+* __The service with UI SPA, API, and other features__ - a folder with files or archive.
+
+["Build Artifacts per Application type"](assets/Delivery Infrastructure per Application Type.png)
+---
+class: dp-regular
+
+# Software Delivery - Hosting Infrastructure
+
+* Facility(ies) that houses IT equipment, such as computing servers and networking kits. Provides basic utilities for it to work (electricity, cooling, etc.).
+* Software applications, such as web servers, DB servers, etc., installed on computing servers.
+* Maintenance service for all the above.
+* Physical and/or remote access to the IT equipment to configure and operate.
+* All the otther perks that make one infrastructure better from another.
+
+---
+class: dp-regular
+
+# Hosting Infrastructure for Desktop App
+
+* Communicates with an "outside world" via Internet.
+* All configuration is packed along with the main app file.
+* Distribution server - main source for end users to download the app from.
+* Runs on End User's local environment (Computer).
+* Extremely versatile envs, no control for the app.
+
+["Hosting Infrastructure for Desktop Application"](assets/Hosting Infrastructure for Desktop Application.png)
+---
+class: dp-regular
+
+# Hosting Infrastructure for Mobile App
+
+* Communicates with an "outside world" via Internet.
+* All configuration is packed along with the main app file.
+* App Store - main source for end users to download the app from.
+* Runs on End User's local environment (Phone).
+* Computation Power and Network bandwith are strictly limited.
+
+["Hosting Infrastructure for Mobile Application"](assets/Hosting Infrastructure for Mobile Application.png)
+---
+class: dp-regular
+
+# Hosting Infrastructure for Website
+
+* Configuration becames an Issue because of Secrets.
+* Static VS dynamic websites.
+* HTTP protocol is the main communication channel.
+* HTTP vs HTTPS.
+* Domain names.
+
+["Hosting Infrastructure for Website"](assets/Hosting Infrastructure for Website.png)
+---
+class: dp-regular
+
+# Hosting Infrastructure for SPA with API and Services
+
+* SPA vs Website.
+* At least two domain names instead of one.
+* Website demo with dev tools (`static-website-example`).
+* SPA demo with dev tools.
+
+["Hosting Infrastructure for SPA with API and services"](assets/Hosting Infrastructure for SPA with API and Services.png)
+---
+class: dp-regular
+
+# Software Delivery - Deploy Step
+
+All of the activities that make a software system available for use. Activities examples: Release, Installation, Uninstallation, Update, State Tracking, etc.
+
+We take our __Build Artifacts__ and make it __work as expected__ on existing __infrastructure__.
+
+__!!! Deploy Step MUST be automated as much as possible !!!__
+---
+class: dp-regular, center, middle
+
+# Demo: Manual app deployment from scratch
+
+---
+class: dp-regular
+
+# Demo Application - Requirements
+
+There should be the service to manage Products information. This service should do the following:
+* Has the UI as SPA that will talk to API to manage data.
+* List all the Products available to the user.
+* Create new products.
+* View details and Edit existing products.
+
+---
+class: dp-regular
+
+# What we'll be doing:
+
+1. Infrastructure:
+    1. Server for UI app.
+    2. Server for API.
+    3. DB Server.
+    4. Access to manage infrastructure
+2. Environment configuration:
+    1. Web server, corresponding packages and config for UI app.
+    2. API server, environment and app-level configs for API.
+    3. DB instance set up and config.
+3. Network configurration and Integration testing.
+
+
+Note: We'll be using GCP for our infrastructure for this particular example.
+---
+class: dp-regular
+
+# UI Server - Infrastructure
+
+1. Spin up `n1-standard-1` Virtual Machine in GCP (Name: code-delivery-ui; Region: europe-west1; Boot Disk - Ubuntu 19.04; Firewall - Allow HTTP traffic)
+2. Configure SSH access there to be able to manage the server. Generate SSH key, then add to Compute Engine > Metadata > SSH Keys, test connection:
+
+    ```sh
+    ssh-keygen -t rsa -b 4096 -C "ansible"
+    cat ~/.ssh/ansible.pub | pbcopy
+
+    ssh -i ~/.ssh/ansible ansible@{public-ip}
+    ```
+
+Note: Usually it takes months to get the server up and running with Bare Metal.
+---
+class: dp-regular
+
+# UI Server - Environment configuration. NGINX installation
+
+* Greating NGINX user, allowing SSH for it:
+
+```sh
+sudo adduser nginx
+sudo usermod -aG sudo nginx
+
+sudo rsync --archive --chown=nginx:nginx ~/.ssh /home/nginx/
+```
+
+* SSH as nginx user:
+```sh
+ssh -i ~/.ssh/ansible nginx@{public-ip}
+```
+
+---
+class: dp-regular
+
+# UI Server - Environment configuration. NGINX installation
+
+* Install NGINX:
+
+```sh
+sudo apt update
+sudo apt install nginx
+
+sudo ufw allow 'Nginx HTTP' // Adding firewall rule.
+```
+
+* Test NGINX installation by opening http://{public-ip}/ in the browser.
+
+---
+class: dp-regular
+
+# UI Server - Environment configuration. App deployment
+
+* Build the app:
+
+```sh
+npm install && npm run build:prod:en
+```
+* Upload the build to the server:
+
+```sh
+sudo chown -R $USER:$USER /var/www/html // While SSHd to the server,
+                                        // Change the web folder owner
+rsync -avz -e 'ssh -i ~/.ssh/ansible' dist/browser/ nginx@35.240.97.91:/var/www/html
+```
+* Test the deployment by opening http://{public-ip}/ in the browser.
+---
+class: dp-regular
+
+# API Server - Infrastructure
+
+1. Spin up `n1-standard-1` Virtual Machine in GCP (Name: code-delivery-api; Region: europe-west1; Boot Disk - Ubuntu 19.04; Firewall - Allow HTTP traffic)
+2. Configure SSH access there to be able to manage the server. Generate SSH key, then add to Compute Engine > Metadata > SSH Keys, test connection:
+
+    ```sh
+    ssh-keygen -t rsa -b 4096 -C "ansible"
+    cat ~/.ssh/ansible.pub | pbcopy
+
+    ssh -i ~/.ssh/ansible ansible@{public-ip}
+    ```
+
+Note: Usually it takes months to get the server up and running with Bare Metal.
+
+---
+class: dp-regular
+
+# API Server - Environment configuration. NGINX installation
+
+* Greating NGINX user, allowing SSH for it:
+
+```sh
+sudo adduser nginx
+sudo usermod -aG sudo nginx
+
+sudo rsync --archive --chown=nginx:nginx ~/.ssh /home/nginx/
+```
+
+* SSH as nginx user:
+
+```sh
+ssh -i ~/.ssh/ansible nginx@{public-ip}
+```
+
+---
+class: dp-regular
+
+# API Server - Environment configuration. NGINX installation
+
+* Install NGINX:
+
+```sh
+sudo apt update
+sudo apt install nginx
+sudo ufw allow 'Nginx HTTP' // Adding firewall rule.
+```
+
+* Test NGINX installation by opening http://{public-ip}/ in the browser.
+
+---
+class: dp-regular
+
+# API Server - Environment configuration. NodeJS installation.
+
+NodeJS is an engine to run our API. Will not work without it:
+```sh
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.3.8/install.sh | bash //NVM
+source ~/.profile
+nvm ls-remote | grep -i "latest lts"
+
+nvm install v10.16.3
+nvm install v4.9.1 // For env inconsistency demo
+```
+
+---
+class: dp-regular
+
+# API Server - Environment configuration. App deployment.
+
+* Make a Build
+
+```sh
+npm install && npm run build
+```
+
+* Upload the build to the server:
+
+```sh
+rsync -avz -e 'ssh -i ~/.ssh/ansible' package.json nginx@{public-ip}:/home/nginx/code-delivery-api
+rsync -avz -e 'ssh -i ~/.ssh/ansible' dist nginx@{public-ip}:/home/nginx/code-delivery-api
+```
+---
+class: dp-regular
+
+# API Server - Environment configuration. App deployment.
+
+* Run the application (Uses the DB from the cloud)
+
+```sh
+export DATABASE_URL=postgres://jofuofbd:j9JYJTeMXTYHsbzYUfwjKNGuKnqEWZJl@dumbo.db.elephantsql.com:5432/jofuofbd
+npm i && npm run start
+```
+
+* Test locally - Works!
+
+```sh
+curl http://localhost:3000/
+```
+---
+class: dp-regular
+
+# API Server - Public access.
+
+In order to access our API via Internet, we need to set up a Reverse Proxy to route our HTTP calls from outside to localhost.
+Let's use NGINX for this purpose.
+
+```sh
+sudo nano /etc/nginx/sites-available/default
+```
+
+---
+class: dp-regular
+
+# API Server - Public access.
+
+```config
+server {
+    ...
+        location / {
+            proxy_pass http://localhost:3000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    ...
+    }
+```
+---
+class: dp-regular
+
+# API Server - Public access.
+
+```sh
+sudo nginx -t
+sudo systemctl restart nginx
+npm i && npm run start // Restart the application
+```
+
+* Test our API:
+
+```sh
+curl http://{public-ip}/ //Should return Hello World!
+```
+---
+class: dp-regular
+
+# Manual app deployment - Pros and Cons
+
+* Pros:
+    * No Pros! If you think there are, you wrong!!!
+    * There's no excuse to deploy that way in a modern world!
+
+* Cons:
+    * Error-prone because of a ton of manual steps.
+    * Takes time. A lot!
+    * People owns expertize, not machines.
+    * Hard to document: UI and OS envs are subject to shange;
+    * Edge-cases.
+
+---
+class: dp-regular
+
+# Delivery Workflow - High-level cycle
+
+Source Code Under VCS => Build Artifact => Versioning =>
+<br />
+Infrastructure => Deploy => Success!
+---
+class: dp-regular
+
+# Delivery Workflow - Common Best Practices
+
+* All code shoul be under Version Control System (VCS). No exeptions.
+* Every deploy should be versioned.
+* At least two environments: Staging and Production.
+* Document everything that requires documentation.
+* Everything as a Code.
+* Automation Everywhere.
 
 ---
 class: dp-leading, center,middle

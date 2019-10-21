@@ -33,8 +33,8 @@
         1. Environment configuration issue. We're out of control on what's there and unable to easily track this.
         2. App's misconfigurations. How to appropriately configure your app.
 
-1. What to start from - need a flowchart to cover the infrastructure/hosting part.
-    1. What kind of an app we'll be developing? How are the sandboxes/prod instances set up?
+1. What to start from - need a flowchart: Source Code => Build per app type.
+    1. What kind of an app we'll be developing? How are the sandboxes/prod instances set up? (for each app type - how it works and infrastructure).
         1. Desktop app - ???
         2. Mobile app - ???
         3. Website - ???
@@ -70,10 +70,36 @@
     3. Backups and rollbacks: infrastructure, code and DB.
 7. Roles in delivery: Who should do what? /// Questionable.
 
+# Agenda to announce
+
+We'll gonna be talking about the Software Delivery workflow from the Software Engineering perspective.
+We'll cover the basic theory of this process with the widespread examples for the most popular application examples in modern IT.
+Then we'll go ahead, wear the "Developer" hat and deliver the web app from scratch. As part of this demo, we'll scratch the surface of:
+1. How Devs are working on the feature locally.
+2. How to deliver our work to the end-user: good and bad examples.
+3. Application infrastructure, configuration, logging. CI/CD pipeline and daily routines automation.
+4. Application maintenance, backward compatibility and rollbacks.
+5. Different roles in software delivery process.
+6. Best practices ...
+
+And many-many more that is there to have a fun!
+
+
 
 # Time Spent.
 
 1. 10-12-2019 - 3h.
 2. 10-14-2019 - 4h.
 3. 10-15-2019 - 3h.
+4. 10-16-2019 - 3h.
+5. 10-18-2019 - 4h.
+6. 10-20-2019 - 4h.
+7. 10-21-2019 - 
 
+----------------------------------------------------------------
+
+# Useful links
+
+1. ["Как установить Nginx в Ubuntu 18.04"](https://www.digitalocean.com/community/tutorials/nginx-ubuntu-18-04-ru)
+2. ["PostgreSQL in the cloud"](elephantsql.com)
+3. ["How To Set Up a Node.js Application for Production on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04)
