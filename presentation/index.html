@@ -210,23 +210,28 @@ class: dp-regular
 ---
 class: dp-regular
 
-# Delivery Workflow - Common Best Practices
+# Software Delivery - Deploy Step
 
-* All code shoul be under Version Control System (VCS). No exeptions.
-* At least two environments: Staging and Production.
-* Document everything that requires documentation.
-* Everything as a Code.
+All of the activities that make a software system available for use. Activities examples: Release, Installation, Uninstallation, Update, State Tracking, etc.
 
+We take our __Build Artifacts__ and make it __work as expected__ on existing __infrastructure__.
+
+__!!! Deploy Step MUST be automated as much as possible !!!__
 ---
 class: dp-regular, center, middle
 
-# Demo: Manual app deployment from the ground up
+# Demo: Manual app deployment from scratch
 
 ---
 class: dp-regular
 
 # Demo Application - Requirements
-/// TBD: Add erquirements for the demo app.
+
+There should be the service to manage Products information. This service should do the following:
+* Has the UI as SPA that will talk to API to manage data.
+* List all the Products available to the user.
+* Create new products.
+* View details and Edit existing products.
 
 ---
 class: dp-regular
@@ -478,6 +483,26 @@ class: dp-regular
     * People owns expertize, not machines.
     * Hard to document: UI and OS envs are subject to shange;
     * Edge-cases.
+
+---
+class: dp-regular
+
+# Delivery Workflow - High-level cycle
+
+Source Code Under VCS => Build Artifact => Versioning =>
+<br />
+Infrastructure => Deploy => Success!
+---
+class: dp-regular
+
+# Delivery Workflow - Common Best Practices
+
+* All code shoul be under Version Control System (VCS). No exeptions.
+* Every deploy should be versioned.
+* At least two environments: Staging and Production.
+* Document everything that requires documentation.
+* Everything as a Code.
+* Automation Everywhere.
 
 ---
 class: dp-leading, center,middle
