@@ -10,9 +10,11 @@ export interface IConfig {
     databaseUrl: string;
     dbEntitiesPath: string[];
     cronJobExpression: string;
+    typeorm_synchronize: boolean;
 }
 
 const isDevMode = process.env.NODE_ENV == 'development';
+const typeorm_synchronize = process.env.TYPEORM_SYNCHRONIZE === 'true' || false;
 
 const config: IConfig = {
     port: +process.env.PORT || 3000,
@@ -23,7 +25,8 @@ const config: IConfig = {
     dbEntitiesPath: [
       ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
     ],
-    cronJobExpression: '0 * * * *'
+    cronJobExpression: '0 * * * *',
+    typeorm_synchronize: typeorm_synchronize
 };
 
 export { config };
