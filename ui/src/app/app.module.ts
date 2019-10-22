@@ -5,7 +5,6 @@ import {AppComponent} from './app.component';
 import {APP_CONFIG, AppConfig} from './configs/app.config';
 import {SharedModule} from './shared/shared.module';
 import {NgxExampleLibraryModule} from '@ismaestro/ngx-example-library';
-import {FirebaseModule} from './shared/modules/firebase.module';
 import {SentryErrorHandler} from './modules/core/sentry.errorhandler';
 import {BrowserModule, ɵgetDOM} from '@angular/platform-browser';
 import {I18n} from '@ngx-translate/i18n-polyfill';
@@ -20,7 +19,6 @@ import {Error404PageComponent} from './pages/error404-page/error404-page.compone
 import {ENDPOINTS_CONFIG, EndpointsConfig} from './configs/endpoints.config';
 import {LazyLoadImageModule} from 'ng-lazyload-image';
 import {RouterModule} from '@angular/router';
-import {PrebootModule} from 'preboot';
 
 declare const require;
 
@@ -47,13 +45,11 @@ export function appInitializer(document: HTMLDocument, platformId: object) {
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({appId: 'angularexampleapp'}),
-    PrebootModule.withConfig({appRoot: 'app-root'}),
     HttpClientModule,
     RouterModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     CookieModule.forRoot(),
-    FirebaseModule,
     NgxExampleLibraryModule.forRoot({
       config: {
         say: 'hello'

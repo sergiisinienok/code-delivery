@@ -19,17 +19,17 @@
     </mat-list>
     <mat-list>
       <mat-list-item *ngFor="let hero of heroes; trackBy: trackByFn">
-        <a [@fadeIn]="fadeIn" mat-list-avatar [routerLink]="hero.default ? [routesConfig.routes.heroes.detail(hero.id)] : []">
+        <a [@fadeIn]="fadeIn" mat-list-avatar [routerLink]="[routesConfig.routes.heroes.detail(hero.id)]">
           <img alt="hero avatar" class="cp" mat-list-avatar
-               [src]="hero.default ? hero.avatarThumbnailUrl : 'assets/images/default-hero.png'">
+              [src]="hero.avatarThumbnailUrl">
         </a>
         <h3 mat-line [class.cp]="hero.default">
-          <a [routerLink]="hero.default ? [routesConfig.routes.heroes.detail(hero.id)] : []">
+          <a [routerLink]="[routesConfig.routes.heroes.detail(hero.id)]">
             {{hero.name}}
           </a>
         </h3>
         <p mat-line [class.cp]="hero.default">
-          <a [routerLink]="hero.default ? [routesConfig.routes.heroes.detail(hero.id)] : []">
+          <a [routerLink]="[routesConfig.routes.heroes.detail(hero.id)]">
             <span>{{hero.alterEgo}}</span>
           </a>
         </p>
@@ -66,8 +66,8 @@
           (ngSubmit)="createNewHero()" autocomplete="on">
       <mat-form-field class="input-container">
         <input matInput name="hname" type="text"
-               placeholder="Name (Palindrome?)" i18n-placeholder="@@nameWithPalindrome"
-               formControlName="name">
+              placeholder="Name (Palindrome?)" i18n-placeholder="@@nameWithPalindrome"
+              formControlName="name">
         <mat-error *ngIf="newHeroForm.controls.name.errors && form.submitted">
           <ng-template [ngIf]="newHeroForm.controls.name.errors.required" i18n="@@nameRequired">
             Name is required
@@ -79,8 +79,8 @@
       </mat-form-field>
       <mat-form-field class="input-container">
         <input matInput type="text" name="rname"
-               placeholder="Real name" i18n-placeholder="@@realName"
-               formControlName="alterEgo">
+              placeholder="Real name" i18n-placeholder="@@realName"
+              formControlName="alterEgo">
         <mat-error *ngIf="newHeroForm.controls.alterEgo.errors && form.submitted">
           <ng-template [ngIf]="newHeroForm.controls.alterEgo.errors.required" i18n="@@nameRequired">
             Name is required
