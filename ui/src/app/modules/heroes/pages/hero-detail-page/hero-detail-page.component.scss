@@ -6,9 +6,18 @@
   margin-top: 2rem;
 }
 
+.input-container {
+  display: block;
+}
+
 button {
   @include push--auto(2rem);
   display: block;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
 
 @media (max-width: 600px) {

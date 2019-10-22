@@ -3,7 +3,7 @@ import {InjectionToken} from '@angular/core';
 export let APP_CONFIG = new InjectionToken('app.config');
 
 export const AppConfig: any = {
-  votesLimit: 3,
+  votesLimit: 3000,
   topHeroesLimit: 5,
   snackBarDuration: 3000,
   repositoryURL: 'https://github.com/dazmodel/code-delivery/tree/master/ui',

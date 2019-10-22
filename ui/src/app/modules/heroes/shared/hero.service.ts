@@ -72,6 +72,12 @@ export class HeroService {
       AppConfig.apiRoot + AppConfig.apiHeroesList,
       JSON.parse(JSON.stringify(hero)),
       { headers: this.headers }
+    ).pipe(
+      map((data) => {
+        return new Hero().deserialize(data);
+      }),
+      tap(() => LoggerService.log(`Hero created: ${hero.name}`)),
+      catchError(HeroService.handleError('createHero', []))
     ).toPromise<Hero>();
   }
 
