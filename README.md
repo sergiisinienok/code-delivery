@@ -11,8 +11,8 @@
     1. Products DB. Should be hosted separately. The service should support both Postgres and MongoDB.
 
     2. Products REST API. Should be hosted separately. Tech: NodeJS, TypeScript, ???. The API should support the following functionalities:
-        1. HTTP POST /product - will create a new Product and return it's payload back to the client. Idempotent.
-        2. HTTP GET /product/list - will return all the products available to the user.
+        1. HTTP POST /products - will create a new Product and return it's payload back to the client. Idempotent.
+        2. HTTP GET /products - will return all the products available to the user.
         3. HTTP GET /product/{id} - will return the specific product by its ID.
         4. HTTP PATCH /product/{id} - will edit the product with the specified ID.
         5. API app should log its internal to stdout using Structured Logging approach.
@@ -94,7 +94,7 @@ And many-many more that is there to have a fun!
 4. 10-16-2019 - 3h.
 5. 10-18-2019 - 4h.
 6. 10-20-2019 - 4h.
-7. 10-21-2019 - 
+7. 10-21-2019 - 4h.
 
 ----------------------------------------------------------------
 
@@ -103,3 +103,6 @@ And many-many more that is there to have a fun!
 1. ["Как установить Nginx в Ubuntu 18.04"](https://www.digitalocean.com/community/tutorials/nginx-ubuntu-18-04-ru)
 2. ["PostgreSQL in the cloud"](elephantsql.com)
 3. ["How To Set Up a Node.js Application for Production on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04)
+4. ["API boilerplate"](https://github.com/javieraviles/node-typescript-koa-rest)
+5. ["UI Boilerplate"](https://github.com/Ismaestro/angular8-example-app)
+6. ["Static Website example"](https://github.com/cloudacademy/static-website-example.git)

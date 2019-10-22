@@ -14,7 +14,7 @@ export function logger(winstonInstance) {
             new winston.transports.Console({ format: winston.format.combine(
                 winston.format.colorize(),
                 winston.format.simple()
-              ) })
+            ) })
         ]
     });
 
