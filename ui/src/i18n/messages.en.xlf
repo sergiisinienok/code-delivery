@@ -15,7 +15,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="angularExampleApp" datatype="html">
-        <source>Angular Example App 2019</source><target state="final">Angular Example App 2019</target>
+        <source>Code Delivery UI</source><target state="final">Code Delivery UI</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/shared/components/footer/footer.component.html</context>
           <context context-type="linenumber">5</context>

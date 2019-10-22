@@ -4,14 +4,46 @@
 </div>
 <div class="container" *ngIf="hero" [@fadeIn]="fadeIn">
   <ng-container>
-    <app-hero-card [hero]="hero"></app-hero-card>
+    <form [formGroup]="editHeroForm" #form="ngForm" ngxScrollToFirstInvalid (ngSubmit)="editHero()"
+      autocomplete="on">
+      <mat-form-field class="input-container">
+        <input matInput name="hname" type="text" placeholder="Name (Palindrome?)"
+          i18n-placeholder="@@nameWithPalindrome" formControlName="name">
+        <mat-error *ngIf="newHeroForm.controls.name.errors && form.submitted">
+          <ng-template [ngIf]="newHeroForm.controls.name.errors.required" i18n="@@nameRequired">
+            Name is required
+          </ng-template>
+          <ng-template [ngIf]="newHeroForm.controls.name.errors.maxlength" i18n="@@maxLengthError">
+            The field is too long
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-container">
+        <input matInput type="text" name="rname" placeholder="Real name" i18n-placeholder="@@realName"
+          formControlName="alterEgo">
+        <mat-error *ngIf="newHeroForm.controls.alterEgo.errors && form.submitted">
+          <ng-template [ngIf]="newHeroForm.controls.alterEgo.errors.required" i18n="@@nameRequired">
+            Name is required
+          </ng-template>
+          <ng-template [ngIf]="newHeroForm.controls.alterEgo.errors.maxlength" i18n="@@maxLengthError">
+            The field is too long. Required length: {{newHeroForm.controls.alterEgo.errors.maxlength.requiredLength}}.
+            Current: {{newHeroForm.controls.alterEgo.errors.maxlength.actualLength}}
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+      <button aria-label="create button" mat-raised-button type="submit"
+        [disabled]="form.submitted && !newHeroForm.valid" i18n="@@create">
+        Create
+      </button>
+      <div *ngIf="error" i18n="@@errorHasOcurred">An error has ocurred</div>
+    </form>
     <div id="hero-json">
       <pre>{{hero | json}}</pre>
     </div>
   </ng-container>
 </div>
 <button *ngIf="hero" aria-label="Anchor the hero button" mat-raised-button type="button" (click)="goToTheAnchor()"
-        i18n="@@anchorToHero">
+  i18n="@@anchorToHero">
   Anchor the hero
 </button>
 <button aria-label="Go back button" mat-raised-button type="button" (click)="goBack()" i18n="@@goBack">

@@ -17,8 +17,8 @@
         <mat-menu #matmenu="matMenu">
           <div mat-menu-item *ngFor="let lang of languages">
             <a class="language-link"
-               href="{{(lang.name === 'en') ? currentUrl : '/' + lang.name + currentUrl}}"
-               (click)="changeLanguage(lang.name)">
+              href="{{(lang.name === 'en') ? currentUrl : '/' + lang.name + currentUrl}}"
+              (click)="changeLanguage(lang.name)">
               <mat-icon>flag</mat-icon>
               <span>{{lang.label}}</span>
             </a>

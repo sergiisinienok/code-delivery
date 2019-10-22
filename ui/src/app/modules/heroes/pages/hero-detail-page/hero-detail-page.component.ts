@@ -5,6 +5,9 @@ import {Location} from '@angular/common';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {RoutesConfig} from '../../../../configs/routes.config';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {HeroService} from '../../shared/hero.service';
 
 @Component({
   selector: 'app-hero-detail-page',
@@ -20,10 +23,21 @@ import {RoutesConfig} from '../../../../configs/routes.config';
 export class HeroDetailPageComponent implements OnInit {
 
   hero: Hero;
+  editHeroForm: FormGroup;
+  error: boolean;
 
   constructor(private location: Location,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private formBuilder: FormBuilder,
+              private snackBar: MatSnackBar,
+              private heroService: HeroService) {
+                this.editHeroForm = this.formBuilder.group({
+                  name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
+                  alterEgo: new FormControl('', [Validators.required, Validators.maxLength(30)])
+                });
+
+                this.onChanges();
   }
 
   ngOnInit() {
@@ -36,5 +50,26 @@ export class HeroDetailPageComponent implements OnInit {
 
   goToTheAnchor(): void {
     this.router.navigate([RoutesConfig.routes.heroes.detail(this.hero.id)], {fragment: 'heroe-detail'});
+  }
+
+  async editHero() {
+    if (this.editHeroForm.valid) {
+      this.heroService.createHero(new Hero(this.editHeroForm.value)).then(() => {
+        this.myNgForm.resetForm();
+        this.snackBar.open(this.i18n({value: 'Hero created', id: '@@heroCreated'}), '', {duration: 1000});
+      }, () => {
+        this.error = true;
+      });
+    }
+  }
+
+  private onChanges() {
+    this.editHeroForm.get('name').valueChanges.subscribe((value) => {
+      if (value && value.length >= 3 && UtilsHelperService.isPalindrome(value)) {
+        this.snackBar.open(this.i18n({value: 'Yeah that\'s a Palindrome!', id: '@@yeahPalindrome'}), '', {duration: 2000});
+      } else {
+        this.snackBar.dismiss();
+      }
+    });
   }
 }
