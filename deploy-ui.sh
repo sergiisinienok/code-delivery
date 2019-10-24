@@ -26,8 +26,12 @@ NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
 if [ -z "$NEEDS_TAG" ]; then
     git tag $NEW_TAG
     echo "+ Tagged with $NEW_TAG"
-    git push --tags
+    git push --tags --no-verify
 else
     echo " - Already a tag on this commit. Nothing changed"
 fi
 # ======Done with tagging=========================================================
+
+# ======Run build and deploy steps ===============================================
+docker-compose up --build deploy-ui
+# ======Done with build and deploy ===============================================

@@ -42,5 +42,5 @@ export const AppConfig: any = {
   jwt: environment.production ? '\${API_JWT}' :
   // tslint:disable-next-line: max-line-length
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.rgOobROftUYSWphkdNfxoN2cgKiqNXd4Km4oz6Ex4ng',
-  version: environment.production ? '\$(VERSION)' : '0.0.1'
+  version: environment.production ? '\${VERSION}' : '0.0.1'
 };
