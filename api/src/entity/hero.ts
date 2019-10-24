@@ -4,7 +4,7 @@ import { Length, IsInt, Min, Max, IsUrl } from 'class-validator';
 @Entity()
 export class Hero {
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column({
         length: 80
@@ -51,7 +51,7 @@ export class Hero {
 }
 
 export const heroSchema = {
-    id: { type: 'string', required: true, example: 'z6jX346az6e6QifVj1Yd' },
+    id: { type: 'number', required: true, example: 1 },
     name: { type: 'string', required: true, example: 'Javier' },
     alterEgo: { type: 'string', required: true, example: 'Bruce Banner' },
     likes: { type: 'number', required: false, example: '100' },

@@ -11,7 +11,6 @@
     "serve": "node dist/server.js",
     "build": "npm run tslint && npm run build-ts",
     "start": "npm run serve",
-    "start:prod": "PORT=80 && npm run watch-server",
     "test:integration": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/heroku-dev.postman_environment.json",
     "test:load": "locust --no-web -c 50 -r 10 -f loadtests/locustfile.py --run-time 1m --host=https://node-typescript-koa-rest.herokuapp.com",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",

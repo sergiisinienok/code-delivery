@@ -44,6 +44,8 @@ services:
       # Runtime environment variables
       DATABASE_URL: ${DATABASE_URL}
       TYPEORM_SYNCHRONIZE: ${TYPEORM_SYNCHRONIZE}
+      API_PORT: ${API_PORT}
+      JWT_SECRET: ${JWT_SECRET}
     build:
       context: .
       dockerfile: ./api/Dockerfile.deploy

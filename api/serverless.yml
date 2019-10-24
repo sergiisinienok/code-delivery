@@ -20,6 +20,10 @@ custom:
       Value: ${{env:DATABASE_URL}}
     - Name: TYPEORM_SYNCHRONIZE
       Value: ${{env:TYPEORM_SYNCHRONIZE}}
+    - Name: API_PORT
+      Value: ${{env:API_PORT}}
+    - Name: JWT_SECRET
+      Value: ${{env:JWT_SECRET}}
     - Name: COMMIT
       Value: ${{self:custom.build.sha}}
     - Name: BRANCH
@@ -227,8 +231,8 @@ resources:
           Essential: 'true'
           Image: ${{self:custom.build.image}}
           Environment: ${{self:custom.environment}}
-          Memory: 128
-          MemoryReservation: 50
+          Memory: 1024
+          MemoryReservation: 256
           LogConfiguration:
             LogDriver: awslogs
             Options:

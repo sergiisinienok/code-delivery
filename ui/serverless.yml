@@ -10,7 +10,7 @@ custom:
   # environment settings
   stage: ${{opt:stage}}
   region: ${{env:REGION}}
-  vpcId: ${{env:VPC_ID}}
+  vpcId: ${{env:VPC_ID}}cf
   accId: ${{env:AWS_ACCT_ID}}
   imageTag: ${{file(./tools/deploy/git-info.js):imageTag}}
   certificateArn: ${{env:CERTIFICATE_ARN}}
@@ -202,7 +202,7 @@ resources:
       Properties:
         ServiceName: ${{self:custom.ecsServiceName}}
         Cluster: ${{self:custom.clusterName}}
-        DesiredCount: 2
+        DesiredCount: 1
         TaskDefinition:
           Ref: CDUITaskDefinition
         LoadBalancers:

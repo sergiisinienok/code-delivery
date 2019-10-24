@@ -17,7 +17,7 @@ const isDevMode = process.env.NODE_ENV == 'development';
 const typeorm_synchronize = process.env.TYPEORM_SYNCHRONIZE === 'true' || false;
 
 const config: IConfig = {
-    port: +process.env.PORT || 3000,
+    port: +process.env.API_PORT || 3000,
     debugLogging: isDevMode,
     dbsslconn: false,
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',

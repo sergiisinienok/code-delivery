@@ -1,2 +1,2 @@
 #!/bin/sh
-sh -ce "npm run start:prod"
+sh -ce "npm run watch-server"
