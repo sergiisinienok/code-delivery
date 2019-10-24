@@ -81,8 +81,7 @@
     "ngx-logger": "3.3.13",
     "rxjs": "6.5.2",
     "tslib": "1.10.0",
-    "zone.js": "0.9.1",
-    "@hc/xnu-plugin-ensure-bucket-exists": "2.0.275"
+    "zone.js": "0.9.1"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "8.0.2",
@@ -130,6 +129,11 @@
     "tsickle": "0.35.0",
     "tslint": "5.17.0",
     "typescript": "3.4.5",
-    "webpack-bundle-analyzer": "3.3.2"
+    "webpack-bundle-analyzer": "3.3.2",
+    "shelljs": "0.7.6",
+    "yamljs": "0.2.10",
+    "aws-sdk": "2.7.15",
+    "lodash": "4.17.4",
+    "serverless": "1.36.3"
   }
 }

@@ -18,6 +18,8 @@ custom:
   environment:
     - Name: API_URI
       Value: ${{env:API_URI}}
+    - Name: API_JWT
+      Value: ${{env:API_JWT}}
     - Name: COMMIT
       Value: ${{self:custom.build.sha}}
     - Name: BRANCH
