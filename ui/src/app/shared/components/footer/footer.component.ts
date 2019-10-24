@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AppConfig} from '../../../configs/app.config';
 
 @Component({
   selector: 'app-footer',
@@ -7,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 })
 
 export class FooterComponent implements OnInit {
+  public version: string = AppConfig.version;
   constructor() {
   }
 

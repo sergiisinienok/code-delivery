@@ -1,10 +1,11 @@
 import {InjectionToken} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 export let APP_CONFIG = new InjectionToken('app.config');
 
 export const AppConfig: any = {
   votesLimit: 3000,
-  topHeroesLimit: 5,
+  topHeroesLimit: 20,
   snackBarDuration: 3000,
   repositoryURL: 'https://github.com/dazmodel/code-delivery/tree/master/ui',
   sentryDSN: 'https://38434a1b115f41d3a31e356cdc496c06@sentry.io/1315526',
@@ -35,9 +36,11 @@ export const AppConfig: any = {
       'https://*.google-analytics.com'
     ]
   },
-  apiRoot: 'http://localhost:3000/',
+  apiRoot: environment.production ? '\${API_URI}' : 'http://localhost:3000/',
   apiHeroesList: 'heroes',
   apiHeroById: 'heroes/',
+  jwt: environment.production ? '\${API_JWT}' :
   // tslint:disable-next-line: max-line-length
-  jwt: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.rgOobROftUYSWphkdNfxoN2cgKiqNXd4Km4oz6Ex4ng'
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.rgOobROftUYSWphkdNfxoN2cgKiqNXd4Km4oz6Ex4ng',
+  version: environment.production ? '\${VERSION}' : '0.0.1'
 };

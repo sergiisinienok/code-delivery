@@ -1,0 +1,8 @@
+api/node_modules
+ui/node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.vscode
+exteral-content
+presentation

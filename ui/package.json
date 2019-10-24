@@ -35,7 +35,8 @@
     "release:major": "standard-version --release-as major && git push --follow-tags origin master",
     "ci": "npm run lint && npm run test && npm run e2e && npm run build:ssr && npm run validate:server",
     "prepare:deploy": "bash scripts/prepare-deploy.sh",
-    "deploy": "npm run build:ssr && npm run prepare:deploy && firebase deploy"
+    "deploy": "node ./tools/deploy",
+    "deploy:docker-publish": "node ./tools/deploy/docker-publish"
   },
   "private": true,
   "engines": {
@@ -128,6 +129,11 @@
     "tsickle": "0.35.0",
     "tslint": "5.17.0",
     "typescript": "3.4.5",
-    "webpack-bundle-analyzer": "3.3.2"
+    "webpack-bundle-analyzer": "3.3.2",
+    "shelljs": "0.7.6",
+    "yamljs": "0.2.10",
+    "aws-sdk": "2.7.15",
+    "lodash": "4.17.4",
+    "serverless": "1.36.3"
   }
 }
