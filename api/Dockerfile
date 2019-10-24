@@ -1,19 +1,29 @@
-FROM node:10-alpine
+# =============Start of Builder section================
+FROM node:12-alpine AS builder
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+COPY . ./cd-api
 
-WORKDIR /home/node/app
-
-COPY package*.json ./
-
-USER node
+WORKDIR /cd-api
 
 RUN npm install
 
-COPY --chown=node:node . .
+# RUN npm run build
 
-RUN npm run build
+# ============End of Builder section================
 
-EXPOSE 3000
+# ============Start of server section================
+FROM node:12-alpine
 
-CMD [ "npm", "run", "start" ]
+COPY --from=builder /cd-api /app
+
+WORKDIR /app
+
+RUN ls -lah
+
+RUN chmod +x ./entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
+
+EXPOSE 80
+
+# ============End of server section==================

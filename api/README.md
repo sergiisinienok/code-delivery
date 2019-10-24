@@ -194,7 +194,7 @@ For further documentation regarding validations see [class-validator docs](https
 ## Environment variables
 Create a .env file (or just rename the .example.env) containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
 
- * PORT -> port where the server will be started on, Heroku will set this env variable automatically
+ * API_PORT -> port where the server will be started on, Heroku will set this env variable automatically
  * NODE_ENV -> environment, development value will set the logger as debug level, also important for CI. In addition will determine if the ORM connects to the DB through SSL or not.
  * JWT_SECRET -> secret value, JWT tokens should be signed with this value
  * DATABASE_URL -> DB connection data in connection-string format.

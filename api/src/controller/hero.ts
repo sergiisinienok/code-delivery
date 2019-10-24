@@ -12,13 +12,13 @@ export default class HeroController {
     @summary('Find all heroes')
     public static async getHeroes(ctx: BaseContext) {
 
-        // get a user repository to perform operations with user
+        // get a hero repository to perform operations with hero
         const heroRepository: Repository<Hero> = getManager().getRepository(Hero);
 
-        // load all users
+        // load all heros
         const heroes: Hero[] = await heroRepository.find();
 
-        // return OK status code and loaded users array
+        // return OK status code and loaded heros array
         ctx.status = 200;
         ctx.body = heroes;
     }
@@ -30,14 +30,14 @@ export default class HeroController {
     })
     public static async getHero(ctx: BaseContext) {
 
-        // get a user repository to perform operations with user
+        // get a hero repository to perform operations with hero
         const heroRepository: Repository<Hero> = getManager().getRepository(Hero);
 
-        // load user by id
+        // load hero by id
         const hero: Hero = await heroRepository.findOne(+ctx.params.id || '');
 
         if (hero) {
-            // return OK status code and loaded user object
+            // return OK status code and loaded hero object
             ctx.status = 200;
             ctx.body = hero;
         } else {
@@ -53,10 +53,10 @@ export default class HeroController {
     @body(heroSchema)
     public static async createHero(ctx: BaseContext) {
 
-        // get a user repository to perform operations with user
+        // get a hero repository to perform operations with hero
         const heroRepository: Repository<Hero> = getManager().getRepository(Hero);
 
-        // build up entity user to be saved
+        // build up entity hero to be saved
         const heroToBeUpdated: Hero = new Hero();
         heroToBeUpdated.name = ctx.request.body.name;
         heroToBeUpdated.alterEgo = ctx.request.body.alterEgo;
@@ -66,23 +66,23 @@ export default class HeroController {
         heroToBeUpdated.avatarBlurredUrl = ctx.request.body.avatarBlurredUrl;
         heroToBeUpdated.avatarThumbnailUrl = ctx.request.body.avatarThumbnailUrl;
 
-        // validate user entity
+        // validate hero entity
         const errors: ValidationError[] = await validate(heroToBeUpdated); // errors is an array of validation errors
 
         if (errors.length > 0) {
             // return BAD REQUEST status code and errors array
             ctx.status = 400;
             ctx.body = errors;
-        // } else if (await heroRepository.findOne({ email: userToBeSaved.email })) {
+        // } else if (await heroRepository.findOne({ email: heroToBeSaved.email })) {
         //     // return BAD REQUEST status code and email already exists error
         //     ctx.status = 400;
         //     ctx.body = 'The specified e-mail address already exists';
         } else {
-            // save the user contained in the POST body
-            const user = await heroRepository.save(heroToBeUpdated);
-            // return CREATED status code and updated user
+            // save the hero contained in the POST body
+            const hero = await heroRepository.save(heroToBeUpdated);
+            // return CREATED status code and updated hero
             ctx.status = 201;
-            ctx.body = user;
+            ctx.body = hero;
         }
     }
 
@@ -94,13 +94,19 @@ export default class HeroController {
     @body(heroSchema)
     public static async updateHero(ctx: BaseContext) {
 
-        // get a user repository to perform operations with user
+        // get a hero repository to perform operations with hero
         const heroRepository: Repository<Hero> = getManager().getRepository(Hero);
+        const heroToBeUpdated: Hero = await heroRepository.findOne(+ctx.params.id || '');
 
-        // update the user by specified id
-        // build up entity user to be updated
-        const heroToBeUpdated: Hero = new Hero();
-        heroToBeUpdated.id = ctx.params.id || ''; // will always have a number, this will avoid errors
+        if (!heroToBeUpdated) {
+            // check if a hero with the specified id exists
+            // return a BAD REQUEST status code and error message
+            ctx.status = 400;
+            ctx.body = 'The Hero you are trying to update doesn\'t exist in the db';
+        }
+
+        // update the hero by specified id
+        // build up entity hero to be updated
         heroToBeUpdated.name = ctx.request.body.name;
         heroToBeUpdated.alterEgo = ctx.request.body.alterEgo;
         heroToBeUpdated.likes = ctx.request.body.likes;
@@ -109,28 +115,23 @@ export default class HeroController {
         heroToBeUpdated.avatarBlurredUrl = ctx.request.body.avatarBlurredUrl;
         heroToBeUpdated.avatarThumbnailUrl = ctx.request.body.avatarThumbnailUrl;
 
-        // validate user entity
+        // validate hero entity
         const errors: ValidationError[] = await validate(heroToBeUpdated); // errors is an array of validation errors
 
         if (errors.length > 0) {
             // return BAD REQUEST status code and errors array
             ctx.status = 400;
             ctx.body = errors;
-        } else if (!await heroRepository.findOne(heroToBeUpdated.id)) {
-            // check if a user with the specified id exists
-            // return a BAD REQUEST status code and error message
-            ctx.status = 400;
-            ctx.body = 'The Hero you are trying to update doesn\'t exist in the db';
-        // } else if (await userRepository.findOne({ id: Not(Equal(userToBeUpdated.id)), email: userToBeUpdated.email })) {
+        // } else if (await heroRepository.findOne({ id: Not(Equal(heroToBeUpdated.id)), email: heroToBeUpdated.email })) {
         //     // return BAD REQUEST status code and email already exists error
         //     ctx.status = 400;
         //     ctx.body = 'The specified e-mail address already exists';
         } else {
-            // save the user contained in the PUT body
-            const user = await heroRepository.save(heroToBeUpdated);
-            // return CREATED status code and updated user
+            // save the hero contained in the PATCH body
+            const hero = await heroRepository.save(heroToBeUpdated);
+            // return CREATED status code and updated hero
             ctx.status = 201;
-            ctx.body = user;
+            ctx.body = heroToBeUpdated;
         }
 
     }
@@ -151,13 +152,13 @@ export default class HeroController {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
             ctx.body = 'The Hero you are trying to delete doesn\'t exist in the db';
-        } else if (ctx.state.user.id !== heroToRemove.id) {
-            // check hero's token id and hero id are the same
-            // if not, return a FORBIDDEN status code and error message
-            ctx.status = 403;
-            ctx.body = 'A Hero can only be deleted by himself';
+        // } else if (ctx.state.hero.id !== heroToRemove.id) {
+        //     // check hero's token id and hero id are the same
+        //     // if not, return a FORBIDDEN status code and error message
+        //     ctx.status = 403;
+        //     ctx.body = 'A Hero can only be deleted by himself';
         } else {
-            // the user is there so can be removed
+            // the hero is there so can be removed
             await heroRepository.remove(heroToRemove);
             // return a NO CONTENT status code
             ctx.status = 204;
@@ -165,21 +166,21 @@ export default class HeroController {
 
     }
 
-    // @request('delete', '/testusers')
-    // @summary('Delete users generated by integration and load tests')
-    // public static async deleteTestUsers(ctx: BaseContext) {
+    @request('delete', '/cleanup')
+    @summary('Delete all heroes from db')
+    public static async deleteTestheros(ctx: BaseContext) {
 
-    //     // get a user repository to perform operations with user
-    //     const userRepository = getManager().getRepository(User);
+        // get a hero repository to perform operations with hero
+        const heroRepository = getManager().getRepository(Hero);
 
-    //     // find test users
-    //     const usersToRemove: User[] = await userRepository.find({ where: { email: Like('%@citest.com')} });
+        // find test heros
+        const herosToRemove: Hero[] = await heroRepository.find();
 
-    //     // the user is there so can be removed
-    //     await userRepository.remove(usersToRemove);
+        // the hero is there so can be removed
+        await heroRepository.remove(herosToRemove);
 
-    //     // return a NO CONTENT status code
-    //     ctx.status = 204;
-    // }
+        // return a NO CONTENT status code
+        ctx.status = 204;
+    }
 
 }

@@ -1,25 +1,29 @@
-service: code-delivery-ui
+service: code-delivery-api
 
 custom:
   # static settings
-  service: code-delivery-ui
+  service: code-delivery-api
   instanceType: t2.micro
-  healthCheckPath: /
+  healthCheckPath: /status
   resourceInstance: "-r1" # resourse configuration version that helps when a custom-named resource requires replacing
 
   # environment settings
   stage: ${{opt:stage}}
   region: ${{env:REGION}}
-  vpcId: ${{env:VPC_ID}}cf
+  vpcId: ${{env:VPC_ID}}
   accId: ${{env:AWS_ACCT_ID}}
   imageTag: ${{file(./tools/deploy/git-info.js):imageTag}}
   certificateArn: ${{env:CERTIFICATE_ARN}}
   securityGroupsELB: ${{env:ELB_SECURITY_GROUPS}}
   environment:
-    - Name: API_URI
-      Value: ${{env:API_URI}}
-    - Name: API_JWT
-      Value: ${{env:API_JWT}}
+    - Name: DATABASE_URL
+      Value: ${{env:DATABASE_URL}}
+    - Name: TYPEORM_SYNCHRONIZE
+      Value: ${{env:TYPEORM_SYNCHRONIZE}}
+    - Name: API_PORT
+      Value: ${{env:API_PORT}}
+    - Name: JWT_SECRET
+      Value: ${{env:JWT_SECRET}}
     - Name: COMMIT
       Value: ${{self:custom.build.sha}}
     - Name: BRANCH
@@ -57,8 +61,8 @@ provider:
   region: ${{self:custom.region}}
   stackTags:
     APPLICATION: CODE DELIVERY
-    COMPONENT: CODE DELIVERY UI
-    MICROSERVICE: CODE DELIVERY UI
+    COMPONENT: CODE DELIVERY API
+    MICROSERVICE: CODE DELIVERY API
     ENVIRONMENT: ${{file(./tools/deploy/special-values.js):getCapitalizedStage}}
     buildSHA: ${{self:custom.build.sha}}
     buildTag: ${{self:custom.build.tag}}
@@ -74,16 +78,16 @@ package:
 
 # CloudFormation resource templates
 resources:
-  Description: CODE DELIVERY UI
+  Description: CODE DELIVERY API
 
   Resources:
-    CDUIComposeELB:
+    CDAPIComposeELB:
       Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       Properties:
         Name: ${{self:custom.elbName}}
         Tags:
           - Key: product
-            Value: "code-delivery.ui"
+            Value: "code-delivery.api"
           - Key: env
             Value: ${{self:custom.stage}}
           - Key: customer
@@ -104,38 +108,38 @@ resources:
         SecurityGroups:
           Fn::Split: [ ",", "${{self:custom.securityGroupsELB}}" ]
 
-    CDUIComposeHTTPListener:
+    CDAPIComposeHTTPListener:
       Type: AWS::ElasticLoadBalancingV2::Listener
       DependsOn:
-      - CDUIComposeELB
+      - CDAPIComposeELB
       Properties:
         Certificates: []
         DefaultActions:
         - Type: forward
           TargetGroupArn:
-            Ref: CDUITargetGroup
+            Ref: CDAPITargetGroup
         LoadBalancerArn:
-          Ref: CDUIComposeELB
+          Ref: CDAPIComposeELB
         Port: 80
         Protocol: HTTP
 
-    CDUIComposeHTTPsListener:
+    CDAPIComposeHTTPsListener:
       Type: AWS::ElasticLoadBalancingV2::Listener
       DependsOn:
-      - CDUIComposeELB
+      - CDAPIComposeELB
       Properties:
         Certificates:
         - CertificateArn: ${{self:custom.certificateArn}}
         DefaultActions:
         - Type: forward
           TargetGroupArn:
-            Ref: CDUITargetGroup
+            Ref: CDAPITargetGroup
         LoadBalancerArn:
-          Ref: CDUIComposeELB
+          Ref: CDAPIComposeELB
         Port: 443
         Protocol: HTTPS
 
-    CDUIComposeELBRole:
+    CDAPIComposeELBRole:
       Type: AWS::IAM::Role
       Properties:
         RoleName: ${{self:custom.elbRoleName}}
@@ -163,7 +167,7 @@ resources:
               - ec2:Describe*
               - ec2:AuthorizeSecurityGroupIngress
 
-    CDUIComposeASGRole:
+    CDAPIComposeASGRole:
       Type: AWS::IAM::Role
       Properties:
         RoleName: ${{self:custom.asgRoleName}}
@@ -189,36 +193,36 @@ resources:
               - ecs:UpdateService
               Resource: "*"
 
-    # CDUI
-    CDUI:
+    # CDAPI
+    CDAPI:
       Type: AWS::ECS::Service
       DependsOn:
-      - CDUIComposeHTTPListener
-      - CDUIComposeHTTPsListener
-      - CDUITaskDefinition
-      - CDUIComposeELB
-      - CDUITargetGroup
-      - CDUIHTTPRule
+      - CDAPIComposeHTTPListener
+      - CDAPIComposeHTTPsListener
+      - CDAPITaskDefinition
+      - CDAPIComposeELB
+      - CDAPITargetGroup
+      - CDAPIHTTPRule
       Properties:
         ServiceName: ${{self:custom.ecsServiceName}}
         Cluster: ${{self:custom.clusterName}}
         DesiredCount: 1
         TaskDefinition:
-          Ref: CDUITaskDefinition
+          Ref: CDAPITaskDefinition
         LoadBalancers:
         - ContainerName: ${{self:custom.serviceNameWithStage}}
           ContainerPort: 80
           TargetGroupArn:
-            Ref: CDUITargetGroup
+            Ref: CDAPITargetGroup
         Role:
-          Ref: CDUIComposeELBRole
+          Ref: CDAPIComposeELBRole
         PlacementStrategies:
           - Type: spread
             Field: attribute:ecs.availability-zone
           - Type: binpack
             Field: memory
 
-    CDUITaskDefinition:
+    CDAPITaskDefinition:
       Type: AWS::ECS::TaskDefinition
       Properties:
         Family: ${{self:custom.serviceNameWithStage}}
@@ -227,13 +231,13 @@ resources:
           Essential: 'true'
           Image: ${{self:custom.build.image}}
           Environment: ${{self:custom.environment}}
-          Memory: 128
-          MemoryReservation: 50
+          Memory: 1024
+          MemoryReservation: 256
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-group:
-                Ref: CDUICloudwatchLogGroup
+                Ref: CDAPICloudwatchLogGroup
               awslogs-region:
                 Ref: AWS::Region
               awslogs-stream-prefix:
@@ -245,16 +249,16 @@ resources:
             SoftLimit: 10000
             HardLimit: 10000
 
-    CDUICloudwatchLogGroup:
+    CDAPICloudwatchLogGroup:
       Type: AWS::Logs::LogGroup
       Properties:
         LogGroupName:
           Fn::Sub: /${{self:custom.clusterName}}/${{self:custom.service}}
         RetentionInDays: 7
 
-    CDUIScalingTarget:
+    CDAPIScalingTarget:
       Type: AWS::ApplicationAutoScaling::ScalableTarget
-      DependsOn: CDUI
+      DependsOn: CDAPI
       Properties:
         MaxCapacity: 1
         MinCapacity: 1
@@ -267,20 +271,20 @@ resources:
             - ${{self:custom.clusterName}}
             - "/"
             - Fn::GetAtt:
-              - CDUI
+              - CDAPI
               - Name
         RoleARN:
           Fn::GetAtt:
-          - CDUIComposeASGRole
+          - CDAPIComposeASGRole
           - Arn
 
-    CDUIScalingPolicy:
+    CDAPIScalingPolicy:
       Type: AWS::ApplicationAutoScaling::ScalingPolicy
       Properties:
         PolicyName: ServiceStepPolicy
         PolicyType: StepScaling
         ScalingTargetId:
-          Ref: CDUIScalingTarget
+          Ref: CDAPIScalingTarget
         StepScalingPolicyConfiguration:
           AdjustmentType: PercentChangeInCapacity
           Cooldown: 60
@@ -289,7 +293,7 @@ resources:
           - MetricIntervalLowerBound: 0
             ScalingAdjustment: 200
 
-    CDUIALBAlarm:
+    CDAPIALBAlarm:
       Type: AWS::CloudWatch::Alarm
       Properties:
         EvaluationPeriods: '1'
@@ -298,24 +302,24 @@ resources:
         AlarmDescription: ALB HTTP 500 Error Service Alarm
         Period: '60'
         AlarmActions:
-        - Ref: CDUIScalingPolicy
+        - Ref: CDAPIScalingPolicy
         Namespace: AWS/ApplicationELB
         Dimensions:
         - Name: ContainerlessService
           Value:
-            Ref: CDUI
+            Ref: CDAPI
         ComparisonOperator: GreaterThanThreshold
         MetricName: HTTPCode_ELB_5XX_Count
 
-    CDUITargetGroup:
+    CDAPITargetGroup:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
       DependsOn:
-      - CDUIComposeELB
+      - CDAPIComposeELB
       Properties:
         Name: ${{self:custom.elbTargetGroupName}}
         Tags:
           - Key: product
-            Value: "code-delivery.ui"
+            Value: "code-delivery.api"
           - Key: env
             Value: ${{self:custom.stage}}
           - Key: customer
@@ -338,37 +342,37 @@ resources:
         UnhealthyThresholdCount: 2
         VpcId: ${{self:custom.vpcId}}
 
-    CDUIHTTPRule:
+    CDAPIHTTPRule:
       Type: AWS::ElasticLoadBalancingV2::ListenerRule
       DependsOn:
-      - CDUIComposeHTTPListener
-      - CDUIComposeHTTPsListener
-      - CDUITargetGroup
+      - CDAPIComposeHTTPListener
+      - CDAPIComposeHTTPsListener
+      - CDAPITargetGroup
       Properties:
         Actions:
         - TargetGroupArn:
-            Ref: CDUITargetGroup
+            Ref: CDAPITargetGroup
           Type: forward
         Conditions:
         - Field: host-header
           Values:
           - ${{self:service}}.test
         ListenerArn:
-          Ref: CDUIComposeHTTPListener
+          Ref: CDAPIComposeHTTPListener
         Priority: 2
 
   Outputs:
     LoadBalancerFullName:
       Value:
-        Fn::GetAtt: [ CDUIComposeELB, LoadBalancerFullName ]
+        Fn::GetAtt: [ CDAPIComposeELB, LoadBalancerFullName ]
 
     LoadBalancerName:
       Value:
-        Fn::GetAtt: [ CDUIComposeELB, LoadBalancerName ]
+        Fn::GetAtt: [ CDAPIComposeELB, LoadBalancerName ]
 
     LoadBalancerDNSName:
       Value:
-        Fn::GetAtt: [ CDUIComposeELB, DNSName ]
+        Fn::GetAtt: [ CDAPIComposeELB, DNSName ]
 
     ClusterName:
       Description: "The Name of the cluster."
