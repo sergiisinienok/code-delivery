@@ -26,3 +26,28 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     tty: true
+
+  deploy-api:
+    environment:
+      # Deploy time environment variables
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      REGION: ${REGION}
+      VPC_ID: ${VPC_ID}
+      AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
+      AWS_ACCT_ID: ${AWS_ACCT_ID}
+      CERTIFICATE_ARN: ${CERTIFICATE_ARN}
+      ELB_SECURITY_GROUPS: ${ELB_SECURITY_GROUPS}
+      ELB_SUBNETS: ${ELB_SUBNETS}
+      IMAGE_TAG: ${IMAGE_TAG} # Optional. Overrides git tag.
+      STAGE: ${STAGE}
+      # Runtime environment variables
+      DATABASE_URL: ${DATABASE_URL}
+      TYPEORM_SYNCHRONIZE: ${TYPEORM_SYNCHRONIZE}
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile.deploy
+    command: sh -ce "cd ./api && npm run deploy -- --stage ${STAGE} --verbose"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
