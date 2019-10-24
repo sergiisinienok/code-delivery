@@ -19,11 +19,11 @@ const typeorm_synchronize = process.env.TYPEORM_SYNCHRONIZE === 'true' || false;
 const config: IConfig = {
     port: +process.env.PORT || 3000,
     debugLogging: isDevMode,
-    dbsslconn: !isDevMode,
+    dbsslconn: false,
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
     dbEntitiesPath: [
-      ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
+      'src/entity/**/*.ts'
     ],
     cronJobExpression: '0 * * * *',
     typeorm_synchronize: typeorm_synchronize

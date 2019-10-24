@@ -1,0 +1,387 @@
+service: code-delivery-api
+
+custom:
+  # static settings
+  service: code-delivery-api
+  instanceType: t2.micro
+  healthCheckPath: /status
+  resourceInstance: "-r1" # resourse configuration version that helps when a custom-named resource requires replacing
+
+  # environment settings
+  stage: ${{opt:stage}}
+  region: ${{env:REGION}}
+  vpcId: ${{env:VPC_ID}}
+  accId: ${{env:AWS_ACCT_ID}}
+  imageTag: ${{file(./tools/deploy/git-info.js):imageTag}}
+  certificateArn: ${{env:CERTIFICATE_ARN}}
+  securityGroupsELB: ${{env:ELB_SECURITY_GROUPS}}
+  environment:
+    - Name: DATABASE_URL
+      Value: ${{env:DATABASE_URL}}
+    - Name: TYPEORM_SYNCHRONIZE
+      Value: ${{env:TYPEORM_SYNCHRONIZE}}
+    - Name: COMMIT
+      Value: ${{self:custom.build.sha}}
+    - Name: BRANCH
+      Value: ${{self:custom.build.branch}}
+    - Name: VERSION
+      Value: ${{self:custom.build.tag}}
+    - Name: DEPLOYMENT_TIME
+      Value: ${{self:custom.deploymentTime}}
+    - Name: STAGE
+      Value: ${{self:custom.stage}}
+    - Name: IMAGE_TAG
+      Value: ${{self:custom.imageTag}}
+
+  # calculated settings
+  serviceNameWithStage: ${{self:service}}-${{self:custom.stage}} # raw service name with stage
+  ecsServiceName: ${{self:custom.serviceNameWithStage}}${{self:custom.resourceInstance}}
+  elbRoleName: ${{self:service}}.elb.${{self:custom.stage}}${{self:custom.resourceInstance}}
+  asgRoleName: ${{self:service}}.asg.${{self:custom.stage}}${{self:custom.resourceInstance}}
+  elbName: ${{self:custom.serviceNameWithStage}}
+  elbTargetGroupName: ${{self:custom.serviceNameWithStage}}${{self:custom.resourceInstance}}
+  clusterName: xenial-${{self:custom.stage}}
+  subnetIds: ${{file(./tools/deploy/vpc-config.js):getSubnetIds}}
+  deploymentTime: ${{file(./tools/deploy/deployment-time.js):timestamp}}
+  build:
+    sha: ${{file(./tools/deploy/git-info.js):long}}
+    branch: ${{file(./tools/deploy/git-info.js):branch}}
+    tag: ${{file(./tools/deploy/git-info.js):tag}}
+    commitUrl: https://github.com/dazmodel/code-delivery/commit/${{self:custom.build.sha}}
+    image: ${{self:custom.accId}}.dkr.ecr.${{self:custom.region}}.amazonaws.com/${{self:service}}:${{self:custom.imageTag}}
+
+provider:
+  name: aws
+  variableSyntax: "\\${{([\\s\\S]+?)}}"
+  stage: ${{self:custom.stage}}
+  region: ${{self:custom.region}}
+  stackTags:
+    APPLICATION: CODE DELIVERY
+    COMPONENT: CODE DELIVERY API
+    MICROSERVICE: CODE DELIVERY API
+    ENVIRONMENT: ${{file(./tools/deploy/special-values.js):getCapitalizedStage}}
+    buildSHA: ${{self:custom.build.sha}}
+    buildTag: ${{self:custom.build.tag}}
+    buildImage: ${{self:custom.build.image}}
+    buildBranch: ${{self:custom.build.branch}}
+    buildCommitUrl: ${{self:custom.build.commitUrl}}
+    buildDeploymentTime: ${{self:custom.deploymentTime}}
+  deploymentBucket: com.xenial.deploy.${{self:custom.stage}}
+
+package:
+  exclude:
+    - "**/*"
+
+# CloudFormation resource templates
+resources:
+  Description: CODE DELIVERY API
+
+  Resources:
+    CDAPIComposeELB:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Properties:
+        Name: ${{self:custom.elbName}}
+        Tags:
+          - Key: product
+            Value: "code-delivery.api"
+          - Key: env
+            Value: ${{self:custom.stage}}
+          - Key: customer
+            Value: "code-delivery"
+          - Key: APPLICATION
+            Value: ${{self:provider.stackTags.APPLICATION}}
+          - Key: COMPONENT
+            Value: ${{self:provider.stackTags.COMPONENT}}
+          - Key: MICROSERVICE
+            Value: ${{self:provider.stackTags.MICROSERVICE}}
+          - Key: ENVIRONMENT
+            Value: ${{self:provider.stackTags.ENVIRONMENT}}
+        Scheme: internet-facing
+        LoadBalancerAttributes:
+        - Key: idle_timeout.timeout_seconds
+          Value: 30
+        Subnets: ${{self:custom.subnetIds}}
+        SecurityGroups:
+          Fn::Split: [ ",", "${{self:custom.securityGroupsELB}}" ]
+
+    CDAPIComposeHTTPListener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      DependsOn:
+      - CDAPIComposeELB
+      Properties:
+        Certificates: []
+        DefaultActions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: CDAPITargetGroup
+        LoadBalancerArn:
+          Ref: CDAPIComposeELB
+        Port: 80
+        Protocol: HTTP
+
+    CDAPIComposeHTTPsListener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      DependsOn:
+      - CDAPIComposeELB
+      Properties:
+        Certificates:
+        - CertificateArn: ${{self:custom.certificateArn}}
+        DefaultActions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: CDAPITargetGroup
+        LoadBalancerArn:
+          Ref: CDAPIComposeELB
+        Port: 443
+        Protocol: HTTPS
+
+    CDAPIComposeELBRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${{self:custom.elbRoleName}}
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - ecs.amazonaws.com
+            Action:
+            - sts:AssumeRole
+        Path: "/"
+        Policies:
+        - PolicyName: ${{self:custom.elbRoleName}}
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Resource: "*"
+              Action:
+              - elasticloadbalancing:DeregisterInstancesFromLoadBalancer
+              - elasticloadbalancing:DeregisterTargets
+              - elasticloadbalancing:Describe*
+              - elasticloadbalancing:RegisterInstancesWithLoadBalancer
+              - elasticloadbalancing:RegisterTargets
+              - ec2:Describe*
+              - ec2:AuthorizeSecurityGroupIngress
+
+    CDAPIComposeASGRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${{self:custom.asgRoleName}}
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - application-autoscaling.amazonaws.com
+            Action:
+            - sts:AssumeRole
+        Path: "/"
+        Policies:
+        - PolicyName: ${{self:custom.asgRoleName}}
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+              - application-autoscaling:*
+              - cloudwatch:DescribeAlarms
+              - cloudwatch:PutMetricAlarm
+              - ecs:DescribeServices
+              - ecs:UpdateService
+              Resource: "*"
+
+    # CDAPI
+    CDAPI:
+      Type: AWS::ECS::Service
+      DependsOn:
+      - CDAPIComposeHTTPListener
+      - CDAPIComposeHTTPsListener
+      - CDAPITaskDefinition
+      - CDAPIComposeELB
+      - CDAPITargetGroup
+      - CDAPIHTTPRule
+      Properties:
+        ServiceName: ${{self:custom.ecsServiceName}}
+        Cluster: ${{self:custom.clusterName}}
+        DesiredCount: 1
+        TaskDefinition:
+          Ref: CDAPITaskDefinition
+        LoadBalancers:
+        - ContainerName: ${{self:custom.serviceNameWithStage}}
+          ContainerPort: 80
+          TargetGroupArn:
+            Ref: CDAPITargetGroup
+        Role:
+          Ref: CDAPIComposeELBRole
+        PlacementStrategies:
+          - Type: spread
+            Field: attribute:ecs.availability-zone
+          - Type: binpack
+            Field: memory
+
+    CDAPITaskDefinition:
+      Type: AWS::ECS::TaskDefinition
+      Properties:
+        Family: ${{self:custom.serviceNameWithStage}}
+        ContainerDefinitions:
+        - Name: ${{self:custom.serviceNameWithStage}}
+          Essential: 'true'
+          Image: ${{self:custom.build.image}}
+          Environment: ${{self:custom.environment}}
+          Memory: 128
+          MemoryReservation: 50
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: CDAPICloudwatchLogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix:
+                Ref: AWS::StackName
+          PortMappings:
+          - ContainerPort: 80
+          Ulimits:
+          - Name: nofile
+            SoftLimit: 10000
+            HardLimit: 10000
+
+    CDAPICloudwatchLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName:
+          Fn::Sub: /${{self:custom.clusterName}}/${{self:custom.service}}
+        RetentionInDays: 7
+
+    CDAPIScalingTarget:
+      Type: AWS::ApplicationAutoScaling::ScalableTarget
+      DependsOn: CDAPI
+      Properties:
+        MaxCapacity: 1
+        MinCapacity: 1
+        ScalableDimension: ecs:service:DesiredCount
+        ServiceNamespace: ecs
+        ResourceId:
+          Fn::Join:
+          - ''
+          - - service/
+            - ${{self:custom.clusterName}}
+            - "/"
+            - Fn::GetAtt:
+              - CDAPI
+              - Name
+        RoleARN:
+          Fn::GetAtt:
+          - CDAPIComposeASGRole
+          - Arn
+
+    CDAPIScalingPolicy:
+      Type: AWS::ApplicationAutoScaling::ScalingPolicy
+      Properties:
+        PolicyName: ServiceStepPolicy
+        PolicyType: StepScaling
+        ScalingTargetId:
+          Ref: CDAPIScalingTarget
+        StepScalingPolicyConfiguration:
+          AdjustmentType: PercentChangeInCapacity
+          Cooldown: 60
+          MetricAggregationType: Average
+          StepAdjustments:
+          - MetricIntervalLowerBound: 0
+            ScalingAdjustment: 200
+
+    CDAPIALBAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        EvaluationPeriods: '1'
+        Statistic: Average
+        Threshold: 10
+        AlarmDescription: ALB HTTP 500 Error Service Alarm
+        Period: '60'
+        AlarmActions:
+        - Ref: CDAPIScalingPolicy
+        Namespace: AWS/ApplicationELB
+        Dimensions:
+        - Name: ContainerlessService
+          Value:
+            Ref: CDAPI
+        ComparisonOperator: GreaterThanThreshold
+        MetricName: HTTPCode_ELB_5XX_Count
+
+    CDAPITargetGroup:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      DependsOn:
+      - CDAPIComposeELB
+      Properties:
+        Name: ${{self:custom.elbTargetGroupName}}
+        Tags:
+          - Key: product
+            Value: "code-delivery.api"
+          - Key: env
+            Value: ${{self:custom.stage}}
+          - Key: customer
+            Value: "code-delivery"
+          - Key: APPLICATION
+            Value: ${{self:provider.stackTags.APPLICATION}}
+          - Key: COMPONENT
+            Value: ${{self:provider.stackTags.COMPONENT}}
+          - Key: MICROSERVICE
+            Value: ${{self:provider.stackTags.MICROSERVICE}}
+          - Key: ENVIRONMENT
+            Value: ${{self:provider.stackTags.ENVIRONMENT}}
+        HealthCheckIntervalSeconds: 10
+        HealthCheckPath: ${{self:custom.healthCheckPath}}
+        HealthCheckProtocol: HTTP
+        HealthCheckTimeoutSeconds: 5
+        HealthyThresholdCount: 2
+        Port: 80
+        Protocol: HTTP
+        UnhealthyThresholdCount: 2
+        VpcId: ${{self:custom.vpcId}}
+
+    CDAPIHTTPRule:
+      Type: AWS::ElasticLoadBalancingV2::ListenerRule
+      DependsOn:
+      - CDAPIComposeHTTPListener
+      - CDAPIComposeHTTPsListener
+      - CDAPITargetGroup
+      Properties:
+        Actions:
+        - TargetGroupArn:
+            Ref: CDAPITargetGroup
+          Type: forward
+        Conditions:
+        - Field: host-header
+          Values:
+          - ${{self:service}}.test
+        ListenerArn:
+          Ref: CDAPIComposeHTTPListener
+        Priority: 2
+
+  Outputs:
+    LoadBalancerFullName:
+      Value:
+        Fn::GetAtt: [ CDAPIComposeELB, LoadBalancerFullName ]
+
+    LoadBalancerName:
+      Value:
+        Fn::GetAtt: [ CDAPIComposeELB, LoadBalancerName ]
+
+    LoadBalancerDNSName:
+      Value:
+        Fn::GetAtt: [ CDAPIComposeELB, DNSName ]
+
+    ClusterName:
+      Description: "The Name of the cluster."
+      Value: ${{self:custom.clusterName}}
+
+    SecurityGroupName:
+      Description: "A Security Group for the Auto Scaling Launch Configuration."
+      Value: cf:${{self:service}}-${{self:custom.stage}}:${{self:custom.clusterName}}:ec2:security-group:name
+
+    AutoScalingGroupName:
+      Description: "A name of the Auto Scaling Group."
+      Value: cf:${{self:service}}-${{self:custom.stage}}:ecs:cluster:${{self:custom.clusterName}}:autoscaling-group:name
+
+    ServerlessDeploymentBucketName:
+      Description: "Deployment bucket name"
+      Value: ${{self:provider.deploymentBucket}}

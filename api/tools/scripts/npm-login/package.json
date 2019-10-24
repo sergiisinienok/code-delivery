@@ -1,0 +1,9 @@
+{
+  "name": "@hc/dm-npm-login",
+  "version": "0.5.11",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "npm-registry-client": "8.5.0"
+  }
+}
