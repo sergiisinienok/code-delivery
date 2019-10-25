@@ -14,6 +14,11 @@
         <input matInput type="text" name="rname" placeholder="Real name" i18n-placeholder="@@realName"
           formControlName="alterEgo" [value]="hero.alterEgo">
       </mat-form-field>
+      <!-- 1 Favorite color field -->
+      <mat-form-field class="input-container">
+          <input matInput type="text" name="favoriteColor" formControlName="favoriteColor" placeholder="Favorite Color?" [value]="hero.favoriteColor">
+      </mat-form-field>
+      <!-- --------- -->
       <mat-form-field class="input-container">
           <input matInput type="url" name="avatarUrl" placeholder="Avatar URL?"
             formControlName="avatarUrl" [value]="hero.avatarUrl">

@@ -60,6 +60,7 @@ export default class HeroController {
         const heroToBeUpdated: Hero = new Hero();
         heroToBeUpdated.name = ctx.request.body.name;
         heroToBeUpdated.alterEgo = ctx.request.body.alterEgo;
+        heroToBeUpdated.favoriteColor = ctx.request.body.favoriteColor; // Favorite Color 2
         heroToBeUpdated.likes = ctx.request.body.likes;
         heroToBeUpdated.default = ctx.request.body.default;
         heroToBeUpdated.avatarUrl = ctx.request.body.avatarUrl;
@@ -73,10 +74,6 @@ export default class HeroController {
             // return BAD REQUEST status code and errors array
             ctx.status = 400;
             ctx.body = errors;
-        // } else if (await heroRepository.findOne({ email: heroToBeSaved.email })) {
-        //     // return BAD REQUEST status code and email already exists error
-        //     ctx.status = 400;
-        //     ctx.body = 'The specified e-mail address already exists';
         } else {
             // save the hero contained in the POST body
             const hero = await heroRepository.save(heroToBeUpdated);
@@ -109,6 +106,7 @@ export default class HeroController {
         // build up entity hero to be updated
         heroToBeUpdated.name = ctx.request.body.name;
         heroToBeUpdated.alterEgo = ctx.request.body.alterEgo;
+        heroToBeUpdated.favoriteColor = ctx.request.body.favoriteColor; // Favorite Color 2
         heroToBeUpdated.likes = ctx.request.body.likes;
         heroToBeUpdated.default = ctx.request.body.default;
         heroToBeUpdated.avatarUrl = ctx.request.body.avatarUrl;
@@ -122,10 +120,6 @@ export default class HeroController {
             // return BAD REQUEST status code and errors array
             ctx.status = 400;
             ctx.body = errors;
-        // } else if (await heroRepository.findOne({ id: Not(Equal(heroToBeUpdated.id)), email: heroToBeUpdated.email })) {
-        //     // return BAD REQUEST status code and email already exists error
-        //     ctx.status = 400;
-        //     ctx.body = 'The specified e-mail address already exists';
         } else {
             // save the hero contained in the PATCH body
             const hero = await heroRepository.save(heroToBeUpdated);
@@ -152,11 +146,6 @@ export default class HeroController {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
             ctx.body = 'The Hero you are trying to delete doesn\'t exist in the db';
-        // } else if (ctx.state.hero.id !== heroToRemove.id) {
-        //     // check hero's token id and hero id are the same
-        //     // if not, return a FORBIDDEN status code and error message
-        //     ctx.status = 403;
-        //     ctx.body = 'A Hero can only be deleted by himself';
         } else {
             // the hero is there so can be removed
             await heroRepository.remove(heroToRemove);
