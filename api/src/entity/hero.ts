@@ -17,7 +17,10 @@ export class Hero {
     })
     @Length(10, 100)
     alterEgo: string;
-
+// Favorite color 1
+    @Length(3, 20)
+    favoriteColor: string;
+// ===========
     @Column({
         default: 0
     })
@@ -54,6 +57,7 @@ export const heroSchema = {
     id: { type: 'number', required: true, example: 1 },
     name: { type: 'string', required: true, example: 'Javier' },
     alterEgo: { type: 'string', required: true, example: 'Bruce Banner' },
+    favoriteColor: { type: 'string', required: true, example: 'white' }, // Favorite color 1
     likes: { type: 'number', required: false, example: '100' },
     default: { type: 'boolean', required: true, example: false },
     avatarUrl: { type: 'string', required: true, example: 'https://firebasestorage.googleapis.com/v0/b/ismaestro-angularexampleapp.appspot.com/o/heroes-images%2FVajTPSd8NLy2bxGXydY4.jpg?alt=media&token=6d8ab120-fd53-4af0-9069-1c97390f26bf' },
