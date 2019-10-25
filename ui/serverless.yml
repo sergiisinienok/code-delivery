@@ -10,7 +10,7 @@ custom:
   # environment settings
   stage: ${{opt:stage}}
   region: ${{env:REGION}}
-  vpcId: ${{env:VPC_ID}}cf
+  vpcId: ${{env:VPC_ID}}
   accId: ${{env:AWS_ACCT_ID}}
   imageTag: ${{file(./tools/deploy/git-info.js):imageTag}}
   certificateArn: ${{env:CERTIFICATE_ARN}}

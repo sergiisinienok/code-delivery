@@ -686,11 +686,147 @@ class: dp-regular
 * Internal and Customer-facing logs
 * Retention policy and costs
 
-(AWS CLoudWatch walkthrough)
+(AWS CloudWatch walkthrough)
+---
+class: dp-regular
+
+# Demo #2 - Good and To-Improve
+---
+class: dp-regular
+
+# How to deliver new feature? - Add Heroe's Favorite Color
+
+* Create branch: `git checkout -b favorite-color`
+* Modify UI - test with local API
+* Modify API - test locally
+* Add DB migration, run on local DB
+* Create the Pull Request: description, approvals, merge
+* Deliver UI, API and migrations to the cloud from `master`
+---
+class: dp-regular
+
+# Favorite Color Feature - new branch. Why?
+
+* Isolates the scope of work
+* Allows to save half-baked results remotely without affecting the other teams
+* Locates the scope for dev and QA verification
+* Sandboxed Point of collaboration
+---
+class: dp-regular
+
+# Favorite Color Feature - Modify UI
+
+* Put the field on the form - `ui/src/app/modules/heroes/pages/hero-detail-page/hero-detail-page.component.html`(1)
+* Add it to formBuilder - `ui/src/app/modules/heroes/pages/hero-detail-page/hero-detail-page.component.ts` (2) error
+* Add field to data model - `ui/src/app/modules/heroes/shared/hero.model.ts` (3)
+
+The field was sent to API, not persisted in DB yet. Move on.
+---
+class: dp-regular
+
+# Favorite Color Feature - Modify API
+
+* Observe local DB, http://localhost:8080, `apidb.hero` table. No field
+* Add field to the data model - `api/src/entity/hero.ts` (1), notice in JSON on UI. Valdation Error
+* Add field processing to controller - `api/src/controller/hero.ts` (2). Not persisted in DB, hm?
+* Observe local DB, http://localhost:8080, `apidb.hero` table. No field?
+* Aha! Migration: `npm run typeorm migration:run`
+
 ---
 class: dp-regular
 
 # Code Delivery vs DB changes delivery
+
+* Create migration for new field: `npm run typeorm migration:generate -- -n favorite-color`
+* Apply it to the local DB: `npm run typeorm migration:run`
+* Observe local DB, http://localhost:8080, `apidb.hero` table. Here it is!
+* Test UI + API locally. Bingo!
+---
+class: dp-regular
+
+# Feature delivery: AWS
+
+* Deply API: `sh deploy-api.sh`
+* Check with PostMan: fail, WTF?
+* Migrate: `npm run typeorm migration:run`
+* Check. Success!!!
+---
+class: dp-regular
+
+# Feature delivery: AWS
+
+* Deply UI: `sh deploy-ui.sh`
+* Check. Success!!!
+* Done!
+---
+class: dp-regular
+
+# Feature delivery: Sum up
+
+.left-column[
+__Good__
+* It is automagically versioned
+* We can access version info easily
+* High degree of automation
+* Deployment is simple and straightforward for engineers
+]
+
+.right-column[
+__Opportunities__
+* Running on local machine
+* Hard to use for non-engineers
+* No Changelogs Automation and presentation
+* Low visibility for business at scale
+]
+
+---
+class: dp-regular
+
+# Delivery Pipeline - godmode
+
+Does it make sense to invest at that degree?
+
+* "Time to Market" matters .... more and more ["Conway's law"](https://en.wikipedia.org/wiki/Conway%27s_law)
+* DevOps Research and Assessment (DORA) State Of DevOps 2018, p.12
+* ["DORA State Of DevOps 2019: ELITE group growth from 7% to 20% (~285% growth)"](https://cloud.google.com/blog/products/devops-sre/the-2019-accelerate-state-of-devops-elite-performance-productivity-and-scaling)
+---
+class: dp-regular
+
+# Delivery Pipeline - CI/CD. Where to start?
+
+Pick a tool => Build on it => Done :)
+
+__How to select CI/CD tool:__
+
+* CI/CD Hosting Requirement - Do you want/can manage it or prefer it as a service?
+* Budget for CI/CD - How often (once a months, week, day?) do you plan to produce builds/do deploys?
+* Features - Everything as Code? Enterprise Auth? Cloud-native?
+
+["Choosing a CI-CD Tool"](https://saucelabs.com/blog/choosing-a-ci-cd-tool)
+---
+class: dp-regular
+
+# Top-5 CI/CD tools 2019
+
+* Jenkins
+* CircleCI
+* TeamCity
+* Bamboo
+* GitLab
+
+["Best 14 CI/CD Tools You Must Know | Updated for 2019"](https://www.katalon.com/resources-center/blog/ci-cd-tools/)
+---
+class: dp-regular
+
+# Delivery Pipeline - DevOps?
+
+### DevOps is a set of practices, not a role! ["DevOps Manifesto"](https://sites.google.com/a/jezhumble.net/devops-manifesto/).
+
+Basic practices:
+* CAMS Value (Culture, Automation, Measurement, Share Knowledge) ["Culture eats strategy for breakfast"](https://www.managementcentre.co.uk/culture-eats-strategy-for-breakfast/)
+* Continuous Delivery. Conveyor-like process.
+* Everything as Code.
+* Continuous Monitoring.
 ---
 class: dp-regular
 
