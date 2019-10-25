@@ -63,6 +63,14 @@
             margin-top: 0em;
             text-align: left;
         }
+        .right {
+            float: right;
+            margin-left: 1em;
+        }
+        .right-column-img {
+            max-width:100%;
+            max-height:100%;
+        }
     </style>
 </head>
 
@@ -81,10 +89,12 @@ Cloud Architect @ Dev-Pro.net
 class: dp-regular
 # Agenda
 
+We're going to wear developer's hat. Take a look and touch the source code, deliver the reral app.
+
 * Software Delivery and Development - Theory
 * Delivery Workflow for various types of apps
-* ...
-* Demo: Manual app deployment fromn the ground up
+* Live development and delivery demos
+* Lessons Learned and Best Practices
 
 ---
 class: dp-regular
@@ -220,7 +230,7 @@ __!!! Deploy Step MUST be automated as much as possible !!!__
 ---
 class: dp-regular, center, middle
 
-# Demo 1: Manual app deployment from scratch
+# Demo #1: Manual app deployment from scratch
 
 ---
 class: dp-regular
@@ -241,12 +251,12 @@ class: dp-regular
 1. Infrastructure:
     1. Server for UI app.
     2. Server for API.
-    3. DB Server.
+    3. DB Server - cloud-hosted.
     4. Access to manage infrastructure
 2. Environment configuration:
     1. Web server, corresponding packages and config for UI app.
     2. API server, environment and app-level configs for API.
-    3. DB instance set up and config.
+    3. DB instance set up and config in the cloud.
 3. Network configurration and Integration testing.
 
 
@@ -520,7 +530,7 @@ class: dp-regular
 ---
 class: dp-regular
 
-# Demo 1 - Lessons Learned
+# Demo #1 - Lessons Learned
 
 * Need to version my app appropriately.
 * Want to easily find the version number.
@@ -533,13 +543,158 @@ class: dp-regular, center, middle
 ---
 class: dp-regular
 
-# Demo #2 - Level Set
+# Handling The Lessons Lerned - Level Set
 
 * Introduce the simplest Configuration Management possible - env vars.
 * Code Package, Environment Isolation. Docker.
 * App Versioning - the Right Way.
-* Automate Infrastructure: Infrastructure as Code.
+* Infrastructure Automation, Infrastructure as Code.
+* Build and Deploy separation: `Build Once` best practice.
 * Deploy: Easy-Pizy.
+* Logging: Types and Troubleshooting.
+---
+class: dp-regular
+
+# Demo #2 - What aere we going to do?
+
+* Deploy our UI and API apps to the cloud
+* Take a look at AWS Cloud
+* Cover our lessons learning with corresponding theory and practical examples
+---
+class: dp-regular
+
+# Config Management - WTF?
+
+__Configuration management (CM)__ is a systems engineering process for establishing and maintaining consistency of a product's attributes throughout its life.
+
+__WAAAAAAAT?__
+
+To keep it simple, the majority of apps require some initial information in order to launch and execute.
+
+```sh
+# Set .env first!
+sh deploy-api.sh
+```
+---
+class: dp-regular
+
+# Config Management - Examples
+
+Our UI app configs. We need to know where the API lives (at least):
+```sh
+API_URI=http://localhost:3000/
+API_JWT=...
+```
+---
+class: dp-regular
+
+# Config Management - Examples
+
+Our API app configs. We need to know where the DB is and how to verify tokens (private key):
+```sh
+DATABASE_URL=...
+JWT_SECRET=your-secret-whatever
+```
+---
+class: dp-regular
+
+# Config Management - Ways to store configs
+
+* Hardcode/embed into source code
+* Store in config file
+* Store in DB
+* Environment Variables
+* Config Management systems (etcd, Hashi Corp Vault, etc.)
+---
+class: dp-regular
+
+# Code Package and Isolation - WHY?
+
+__Code Package__ - Standardize the delivery artifacts to simplify operation.
+__Isolation__ - Making our delivery artifct self-contained.
+
+(Went through Deckerfiles for UI and API)
+---
+class: dp-regular
+
+# Package and Isolation - HOW? Docker
+
+.left-column[
+* __Standard:__ Docker created the industry standard for containers, portable anywhere
+* __Lightweight:__ do not require an OS per application, driving higher server efficiencies and reducing server and licensing costs
+* __Secure:__ Docker provides the strongest default isolation capabilities in the industry
+]
+
+.right-column[
+<img src="https://www.docker.com/sites/default/files/d8/styles/large/public/2018-11/container-what-is-container.png?itok=vle7kjDj"
+class="right-column-img">
+</img>
+]
+---
+class: dp-regular
+
+# App Versioning - the Right Way
+
+* Versioning approach - ["SemVer"](https://semver.org/) as industry standard
+* Use Tags in Source Control (git, svn, tfs, etc.)
+* Make the app version easily accessible for users
+* Collect changelogs, make it widely accessible
+
+```sh
+git tag // Versions
+git log // Changelog
+```
+---
+class: dp-regular
+
+# Infrastructure Automation
+
+* "Machines" MUST own infrastructure detaiils, not people
+* Document important infrastructure details along with its ["topology"](https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q4/AWS-autolayout/AWS-Network-Diagram.png)
+* Automate the infrastructure routines as much as possible
+* Make your Infrastructure Automation repeatable
+* `Infrastructure as Code` best practice
+* Infrastructure State versioning
+
+(serverless.yml review + CloudFormation stack Designer)
+---
+class: dp-regular
+
+# Build and Deploy Steps Separation
+
+* __Build__ - producing and publishing application artifacts
+* __Deploy__ - delivering build artifacts to the environment, along with all the configuration required for it to launch
+* `Build once - deploy everywhere` best practice
+
+(AWS ECR review)
+---
+class: dp-regular
+
+# Deploy: Easy-Pizy
+
+* Deploy is as much of "no-event" as possible
+* `Anybody can deploy` as a best practice
+* `Deployment guru` as dangerous antipattern
+---
+class: dp-regular
+
+# Logging - must-have for the app
+
+* Log levels: DEBUG, INFO, WARN, ERROR, FATAL
+* Structured Logging vs Plain Text logs
+* Distributed Tracing
+* Internal and Customer-facing logs
+* Retention policy and costs
+
+(AWS CLoudWatch walkthrough)
+---
+class: dp-regular
+
+# Code Delivery vs DB changes delivery
+---
+class: dp-regular
+
+# Summary
 ---
 class: dp-leading, center,middle
 
