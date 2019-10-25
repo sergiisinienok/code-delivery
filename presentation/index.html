@@ -735,6 +735,11 @@ class: dp-regular
 class: dp-regular
 
 # Code Delivery vs DB changes delivery
+
+* Create migration for new field: `npm run typeorm migration:generate -- -n favorite-color`
+* Apply it to the local DB: `npm run typeorm migration:run`
+* Observe local DB, http://localhost:8080, `apidb.hero` table. Here it is!
+* Test UI + API locally. Bingo!
 ---
 class: dp-regular
 
