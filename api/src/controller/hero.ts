@@ -60,7 +60,7 @@ export default class HeroController {
         const heroToBeUpdated: Hero = new Hero();
         heroToBeUpdated.name = ctx.request.body.name;
         heroToBeUpdated.alterEgo = ctx.request.body.alterEgo;
-        heroToBeUpdated.favoriteColor = ctx.request.body.favoriteColor; // Favorite Color 2
+        // xheroToBeUpdated.favoriteColor = ctx.request.body.favoriteColor; // Favorite Color 2
         heroToBeUpdated.likes = ctx.request.body.likes;
         heroToBeUpdated.default = ctx.request.body.default;
         heroToBeUpdated.avatarUrl = ctx.request.body.avatarUrl;
@@ -106,7 +106,7 @@ export default class HeroController {
         // build up entity hero to be updated
         heroToBeUpdated.name = ctx.request.body.name;
         heroToBeUpdated.alterEgo = ctx.request.body.alterEgo;
-        heroToBeUpdated.favoriteColor = ctx.request.body.favoriteColor; // Favorite Color 2
+        // heroToBeUpdated.favoriteColor = ctx.request.body.favoriteColor; // Favorite Color 2
         heroToBeUpdated.likes = ctx.request.body.likes;
         heroToBeUpdated.default = ctx.request.body.default;
         heroToBeUpdated.avatarUrl = ctx.request.body.avatarUrl;

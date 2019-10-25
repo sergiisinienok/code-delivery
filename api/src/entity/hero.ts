@@ -18,11 +18,11 @@ export class Hero {
     @Length(10, 100)
     alterEgo: string;
 // Favorite color 1
-    @Column({
-        length: 20
-    })
-    @Length(3, 20)
-    favoriteColor: string;
+    // @Column({
+    //     length: 20
+    // })
+    // @Length(3, 20)
+    // favoriteColor: string;
 // ===========
     @Column({
         default: 0

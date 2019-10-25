@@ -4,7 +4,7 @@ export class Hero implements Deserializable {
   id: string;
   name: string;
   alterEgo: string;
-  favoriteColor: string; // Favotrite Color 3
+  // favoriteColor: string; // Favotrite Color 3
   likes: number;
   default: boolean;
   avatarUrl: string;
@@ -15,7 +15,7 @@ export class Hero implements Deserializable {
     this.id = hero.id;
     this.name = hero.name || '';
     this.alterEgo = hero.alterEgo || '';
-    this.favoriteColor = hero.favoriteColor || ''; // Favotrite Color 3
+    // this.favoriteColor = hero.favoriteColor || ''; // Favotrite Color 3
     this.likes = hero.likes || 0;
     this.default = hero.default || false;
     this.avatarUrl = hero.avatarUrl || '';

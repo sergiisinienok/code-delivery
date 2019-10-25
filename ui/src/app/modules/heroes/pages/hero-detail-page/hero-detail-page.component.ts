@@ -40,7 +40,7 @@ export class HeroDetailPageComponent implements OnInit {
                   id: [''],
                   name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
                   alterEgo: new FormControl('', [Validators.required, Validators.maxLength(30)]),
-                  favoriteColor: [''],  // Favorite Colour 2
+                  // favoriteColor: [''],  // Favorite Colour 2
                   likes: [''],
                   default: [''],
                   avatarUrl: [''],
@@ -85,9 +85,9 @@ export class HeroDetailPageComponent implements OnInit {
       this.hero.avatarBlurredUrl = value;
     });
     // Favorite Colour 2
-    this.editHeroForm.get('favoriteColor').valueChanges.subscribe((value) => {
-      this.hero.favoriteColor = value;
-    });
+    // this.editHeroForm.get('favoriteColor').valueChanges.subscribe((value) => {
+    //   this.hero.favoriteColor = value;
+    // });
     // ==========
   }
 }
