@@ -107,3 +107,4 @@ And many-many more that is there to have a fun!
 4. ["API boilerplate"](https://github.com/javieraviles/node-typescript-koa-rest)
 5. ["UI Boilerplate"](https://github.com/Ismaestro/angular8-example-app)
 6. ["Static Website example"](https://github.com/cloudacademy/static-website-example.git)
+7. ["tmux shortcuts & cheatsheet"](https://gist.github.com/MohamedAlaa/2961058)
