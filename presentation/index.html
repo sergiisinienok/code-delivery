@@ -146,7 +146,7 @@ class: dp-regular
 
 * Version control/Tagging.
 * Code qualit check.
-* Compilation/Translation of th esource code into executable instructions.
+* Compilation/Translation of the source code into executable instructions.
 ---
 class: dp-regular
 
@@ -154,8 +154,8 @@ class: dp-regular
 
 * __Desktop App__ - EXE or MSI files.
 * __Mobile App__ - .app (iOS) or .apk (Android) bundles.
-* __Website__ - a folder with files or archive. Might contain configuration.
-* __Public facing API__ - a folder with files or archive. Might contain configuration.
+* __Website__ - a folder with files or archive.
+* __Public facing API__ - a folder with files or archive.
 * __The service with UI SPA, API, and other features__ - a folder with files or archive.
 
 ["Build Artifacts per Application type"](assets/Delivery Infrastructure per Application Type.png)
@@ -237,11 +237,11 @@ class: dp-regular
 
 # Demo Application - Requirements
 
-There should be the service to manage Products information. This service should do the following:
+There should be the service to manage information about Marvel Heroes. This service should do the following:
 * Has the UI as SPA that will talk to API to manage data.
-* List all the Products available to the user.
-* Create new products.
-* View details and Edit existing products.
+* List all the Heroes available.
+* Create new Hero entries.
+* View details and Edit existing Hero BIOs.
 
 ---
 class: dp-regular
@@ -257,7 +257,7 @@ class: dp-regular
     1. Web server, corresponding packages and config for UI app.
     2. API server, environment and app-level configs for API.
     3. DB instance set up and config in the cloud.
-3. Network configurration and Integration testing.
+3. Network configuration and Integration testing.
 
 
 Note: We'll be using GCP for our infrastructure for this particular example.
@@ -422,7 +422,7 @@ class: dp-regular
 * Run the application (Uses the DB from the cloud)
 
 ```sh
-export DATABASE_URL=postgres://jofuofbd:j9JYJTeMXTYHsbzYUfwjKNGuKnqEWZJl@dumbo.db.elephantsql.com:5432/jofuofbd
+export DATABASE_URL={url}
 npm i && npm run start
 ```
 
@@ -534,16 +534,17 @@ class: dp-regular
 
 * Need to version my app appropriately.
 * Want to easily find the version number.
+* Want to configure my app somehow.
 * Automate Infrastructure routines.
 * Simplify the Deploy step.
 ---
 class: dp-regular, center, middle
 
-# Demo #2: Handling The Lessons Lerned
+# Demo #2: Handling The Lessons Learned
 ---
 class: dp-regular
 
-# Handling The Lessons Lerned - Level Set
+# Handling The Lessons Learned - Level Set
 
 * Introduce the simplest Configuration Management possible - env vars.
 * Code Package, Environment Isolation. Docker.
@@ -555,11 +556,11 @@ class: dp-regular
 ---
 class: dp-regular
 
-# Demo #2 - What aere we going to do?
+# Demo #2 - What we're going to do?
 
 * Deploy our UI and API apps to the cloud
 * Take a look at AWS Cloud
-* Cover our lessons learning with corresponding theory and practical examples
+* Cover our "lessons learned" with corresponding theory and practical examples
 ---
 class: dp-regular
 
@@ -571,10 +572,6 @@ __WAAAAAAAT?__
 
 To keep it simple, the majority of apps require some initial information in order to launch and execute.
 
-```sh
-# Set .env first!
-sh deploy-api.sh
-```
 ---
 class: dp-regular
 
@@ -649,7 +646,7 @@ class: dp-regular
 
 # Infrastructure Automation
 
-* "Machines" MUST own infrastructure detaiils, not people
+* "Machines" MUST own infrastructure details, not people
 * Document important infrastructure details along with its ["topology"](https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q4/AWS-autolayout/AWS-Network-Diagram.png)
 * Automate the infrastructure routines as much as possible
 * Make your Infrastructure Automation repeatable
@@ -687,10 +684,6 @@ class: dp-regular
 * Retention policy and costs
 
 (AWS CloudWatch walkthrough)
----
-class: dp-regular
-
-# Demo #2 - Good and To-Improve
 ---
 class: dp-regular
 
