@@ -59,9 +59,9 @@
     "@types/node": "12.0.12",
     "@types/shelljs": "0.8.0",
     "nodemon": "1.19.1",
-    "shelljs": "0.8.2",
+    "shelljs": "0.8.5",
     "ts-node": "8.3.0",
-    "tsconfig-paths": "3.9.0",
+    "tsconfig-paths": "3.10.1",
     "tslint": "5.18.0",
     "typescript": "3.5.2",
     "yamljs": "0.2.10",
@@ -71,20 +71,20 @@
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
-    "class-validator": "0.9.1",
+    "class-validator": "0.14.0",
     "cron": "1.7.2",
     "dotenv": "8.0.0",
     "koa": "2.7.0",
     "koa-bodyparser": "4.2.1",
     "koa-helmet": "4.2.0",
-    "koa-jwt": "3.3.2",
+    "koa-jwt": "4.0.4",
     "koa-router": "7.4.0",
     "koa-swagger-decorator": "1.5.16",
     "pg": "7.4.3",
     "pg-connection-string": "2.0.0",
     "reflect-metadata": "0.1.12",
-    "typeorm": "0.2.18",
+    "typeorm": "0.2.25",
     "winston": "3.2.1",
-    "moment": "2.24.0"
+    "moment": "2.29.4"
   }
 }
