@@ -20,7 +20,7 @@
         "shelljs": "0.7.6",
         "yamljs": "0.2.10",
         "aws-sdk": "2.7.15",
-        "lodash": "4.17.4",
+        "lodash": "4.17.19",
         "moment":" 2.18.1",
         "serverless": "1.36.3"
     }
