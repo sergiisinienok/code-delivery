@@ -70,7 +70,7 @@
     "serverless": "1.36.3"
   },
   "dependencies": {
-    "@koa/cors": "3.0.0",
+    "@koa/cors": "5.0.0",
     "class-validator": "0.14.0",
     "cron": "1.7.2",
     "dotenv": "8.0.0",
